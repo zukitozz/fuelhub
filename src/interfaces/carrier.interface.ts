@@ -24,6 +24,6 @@ export interface ICarrier {
     partida_ubigeo: string;    
     peso_bruto: number;
     ruc: string;
-    enviado?: boolean;
-    items?: ICarrierItem[];  
+    enviado?: boolean; 
+    items?: ICarrierItem[]; 
 }

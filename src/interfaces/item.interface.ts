@@ -24,4 +24,5 @@ export interface ICarrierItem {
     codigo_sunat: string;
     normalizado: number;
     codigo_partida: string;
+    medida: string;
 }
