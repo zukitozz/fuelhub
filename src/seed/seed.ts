@@ -12,8 +12,8 @@ interface SeedData {
 
 export const initialData: SeedData = {
     vehiculos: [
-        {placa: 'AJA-914', tuc: '151716053236556'},
-        {placa: 'BYC-810', tuc: '151716053236556'}
+        {placa: 'AJA914', tuc: '151716053236556'},
+        {placa: 'BYC810', tuc: '151716053236556'}
     ],
     remitentes: [
         {

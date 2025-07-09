@@ -1,10 +1,12 @@
 "use client";
 
-import { listBilling, registerBilling } from "@/actions";
+import { registerBilling } from "@/actions";
 import { SelectFromHideOnSelect } from "@/components";
+import { useRouter } from 'next/navigation';
 import { IBilling, ICarrier, ICarrierItem, IConductor, IDestinatario, IItem, IOrigen, IReceptor, IRemitente, IVehiculo } from "@/interfaces";
 import { Billing } from "@/model";
-import { ChangeEvent, SetStateAction, useState } from "react";
+import clsx from "clsx";
+import { useState } from "react";
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface Props {
@@ -30,9 +32,12 @@ export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, co
     const [errorMessage, setErrorMessage] = useState('')
     const [origenHidden, setOrigenHidden] = useState(false)
     const [conductorHidden, setConductorHidden] = useState(false)
+    const [isPlacingBilling, setIsPlacingBilling] = useState(false)
     const { register, handleSubmit, formState: {errors} } = useForm<FormInputs>();
+    const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async(data) => {
         // listBilling();
+        setIsPlacingBilling(true);
         setErrorMessage('');
         const { dni_conductor, gal_diesel, gal_premium, gal_regular, placa_vehiculo, ruc_destinatario, ruc_remitente, ubigeo_origen } = data;
         const destinatario = destinatarios.find((dest) => dest.numero_documento === ruc_destinatario) as IDestinatario;
@@ -120,8 +125,6 @@ export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, co
             return;
         }
         carrier = respCarrier.comprobante as ICarrier;
-        console.log( "respCarrier", respCarrier );
-        console.log( "carrier", carrier );
         let billing: IBilling = {
             serie: 'F001',
             receptor : destinatario as IReceptor,
@@ -146,12 +149,14 @@ export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, co
         billing.motivo_documento_afectado = 'GUIA DE REMISION TRANSPORTISTA';
 
         const respBilling = await registerBilling( billing );
-        console.log( "respBilling", respBilling );
+
         if ( !respBilling.result ) {
+            setIsPlacingBilling(false);
             setErrorMessage( respBilling.message );
             return;
         }
-        
+        //limpiar los valores del formulario
+        router.push('/historic'); // Redirigir a la página de inicio
 
         // window.location.replace('/');
     }
@@ -182,7 +187,14 @@ export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, co
             <input type="text" className="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" { ...register('gal_premium', { required: true  }) } />
         </div>      
         <div className="flex flex-col mb-10">
-            <button className="btn-primary w-full">Guardar</button>
+            <button 
+                className={
+                    clsx({
+                        'btn-primary w-full': !isPlacingBilling,
+                        'btn-disabled w-full': isPlacingBilling
+                    })
+                }
+            >Guardar</button>
         </div>
       </form>        
     );

@@ -49,11 +49,11 @@ export const TopMenu = () => {
           </div>
         </Link> */}
 
-        {/* <button
+        <button
           onClick={ openSideMenu }
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100">
           Menú
-        </button> */}
+        </button>
 
       </div>
 

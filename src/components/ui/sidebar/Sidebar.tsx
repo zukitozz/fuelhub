@@ -69,20 +69,20 @@ export const Sidebar = () => {
 
         {/* Menú */ }
 
-        <Link
+        {/* <Link
           href="/"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoPersonOutline size={ 30 } />
           <span className="ml-3 text-xl">Perfil</span>
-        </Link>
+        </Link> */}
 
         <Link
-          href="/"
+          href="/historic"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoTicketOutline size={ 30 } />
-          <span className="ml-3 text-xl">Ordenes</span>
+          <span className="ml-3 text-xl">Histórico</span>
         </Link>
 
         <Link
@@ -113,13 +113,13 @@ export const Sidebar = () => {
           <span className="ml-3 text-xl">Productos</span>
         </Link>
 
-        <Link
+        {/* <Link
           href="/"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoTicketOutline size={ 30 } />
           <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
+        </Link> */}
 
         <Link
           href="/"

@@ -42,13 +42,17 @@ export const listBilling = async() => {
     //   withCredentials: false
     // })
 
-    const user = await axios.get('https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod/billing', {
+    const historic = await axios.get('https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod/billing', {
       headers: {
       "Cache-Control": "no-cache",
       "Content-Type": "application/x-www-form-urlencoded",
       },
     });
-    console.log(user)
+    console.log(historic);
+    return {
+      result: true,
+      historic: historic.data || [],
+    }
   }catch (error) {
     return {
       result: false,
