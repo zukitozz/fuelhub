@@ -26,7 +26,7 @@ export const registerBilling = async( billing: IBilling|ICarrier ) => {
   }
 }
 
-export const listBilling = async() => {
+export const listBilling = async(url: string) => {
   try {
     //const user = await posApi.get('https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing', { withCredentials: false });
     // const user = await axios({
@@ -42,7 +42,7 @@ export const listBilling = async() => {
     //   withCredentials: false
     // })
 
-    const historic = await axios.get('https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod/billing', {
+    const historic = await axios.get(url, {
       headers: {
       "Cache-Control": "no-cache",
       "Content-Type": "application/x-www-form-urlencoded",

@@ -1,5 +1,5 @@
 import { IConductor, IDestinatario, IOrigen, IRemitente, IVehiculo } from "@/interfaces";
-interface SeedData {
+export interface SeedData {
     vehiculos: IVehiculo[],
     remitentes: IRemitente[],
     destinatarios: IDestinatario[],
