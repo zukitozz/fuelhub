@@ -6,23 +6,18 @@ import StepC from './StepC';
 import StepD from './StepD';
 import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
+import { IBillingForm } from '@/interfaces';
 
-const initialFormData = {
-    firstName: '',
-    lastName: '',
-    businessName: '',
-    businessCity: '',
-    businessWebsite: '',
-    businessEmail: '',
-    incomePerMonth: 0,
-    taxPercantage: 0,
-    agreeToTerms: false,
-    cantidad_diesel: 0,
-    precio_diesel: 0,
-    cantidad_regular: 0,
-    precio_regular: 0,
-    cantidad_premium: 0,
-    precio_premium: 0,
+export const initialFormData: IBillingForm = {
+  ubigeo_origen: '',
+  placa_vehiculo: '',
+  ruc_remitente: '',
+  ruc_destinatario: '',
+  dni_conductor: '',
+  gal_diesel: 0,
+  gal_regular: 0,
+  gal_premium: 0,
+  gal_precio: 0
 };
 
 const stepsArray = ['A', 'B', 'C', 'D'];
@@ -51,10 +46,14 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   };
 
   // We need a method to update our formData
-  const handleChangeInput = (event: { target: { name: any; checked: any; value: any; }; }) => {
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const fieldName = event.target.name;
     let fieldValue;
-    if (fieldName === 'agreeToTerms') {
+    console.log(event.target);
+    if (
+      event.target instanceof HTMLInputElement &&
+      event.target.type === 'checkbox'
+    ) {
       fieldValue = event.target.checked;
     } else {
       fieldValue = event.target.value;
@@ -68,11 +67,11 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   // We need a method to do final operation
   const handleSubmitFormData = () => {
     // Here You can do final Validation and then Submit Your form
-    if (!formData.agreeToTerms) {
-      alert('Error!!!!!!   You must agree to Terms of Services!!!!');
-    } else {
+    // if (!formData.agreeToTerms) {
+    //   alert('Error!!!!!!   You must agree to Terms of Services!!!!');
+    // } else {
       setStep('Final');
-    }
+    //}
   };
 
   useEffect(() => {

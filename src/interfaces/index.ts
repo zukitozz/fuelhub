@@ -14,3 +14,4 @@ export * from './remitente.interface';
 export * from './serie.interface';
 export * from './usuario.interface';
 export * from './vehiculo.interface';
+export * from './billingForm.interface';

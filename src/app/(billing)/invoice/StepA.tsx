@@ -1,14 +1,11 @@
-import { IConductor, IOrigen, IVehiculo } from "@/interfaces";
+import { IBillingForm, IConductor, IOrigen, IVehiculo } from "@/interfaces";
 
 interface StepAProps {
-  formData: {
-    firstName: string;
-    lastName: string;
-  };
+  formData: IBillingForm;
   origenes: IOrigen[];
   conductores: IConductor[];
   vehiculos: IVehiculo[];
-  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleNextStep: () => void;
 }
 const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextStep, origenes, conductores, vehiculos }) => {
@@ -18,17 +15,23 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
         Seleccione: Información del origen, conductor y vehiculo
       </h1>
       <div className='my-2'>
-        <label htmlFor="origen" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Punto de origen</label>
-        <select id="origen" className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+        <label htmlFor="ubigeo_origen" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Punto de origen</label>
+        <select 
+          name="ubigeo_origen"
+          onChange={handleChangeInput}
+          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option defaultValue={''}>Seleccione</option>
             {origenes.map((field) => (
-                <option key={ field.id } value={ field.ubigeo }>{ field.nombre }</option>
+                <option key={ field.id } value={ field.ubigeo } selected={formData.ubigeo_origen === field.ubigeo}>{ field.nombre }</option>
             ))}
         </select>
       </div>
       <div className='my-2'>
-        <label htmlFor="origen" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Conductor</label>
-        <select id="origen" className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+        <label htmlFor="dni_conductor" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Conductor</label>
+        <select 
+          name="dni_conductor" 
+          onChange={handleChangeInput}
+          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option defaultValue={''}>Seleccione</option>
             {conductores.map((field) => (
                 <option key={ field.numero_documento } value={ field.numero_documento }>{ field.nombres }</option>
@@ -37,7 +40,10 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
       </div>
       <div className='my-2'>
         <label htmlFor="origen" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Vehiculo</label>
-        <select id="origen" className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+        <select 
+          name="placa_vehiculo" 
+          onChange={handleChangeInput}
+          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option defaultValue={''}>Seleccione</option>
             {vehiculos.map((field) => (
                 <option key={ field.placa } value={ field.placa }>{ field.placa }</option>

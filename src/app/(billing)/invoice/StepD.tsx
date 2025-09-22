@@ -1,15 +1,7 @@
+import { IBillingForm } from "@/interfaces";
+
 interface StepDProps {
-  formData: {
-    firstName: string;
-    lastName: string;
-    businessName: string;
-    businessCity: string;
-    businessWebsite: string;
-    businessEmail: string;
-    incomePerMonth: number;
-    taxPercantage: number;
-    agreeToTerms: boolean;
-  };
+  formData: IBillingForm;
   handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handlePrevStep: () => void;
   handleSubmitFormData: () => void;
@@ -26,7 +18,7 @@ const StepD: React.FC<StepDProps> = ({
       <h1 className='mt-2 text-xl font-bold text-blue-900'>
         Step D: Confirm Form Data
       </h1>
-      <DataConfirmRow label='First Name:' value={formData.firstName} />
+      {/* <DataConfirmRow label='First Name:' value={formData.firstName} />
       <DataConfirmRow label='Last Name:' value={formData.lastName} />
       <DataConfirmRow label='Business Name:' value={formData.businessName} />
       <DataConfirmRow label='Business City:' value={formData.businessCity} />
@@ -39,7 +31,7 @@ const StepD: React.FC<StepDProps> = ({
         label='Income Per Month:'
         value={formData.incomePerMonth}
       />
-      <DataConfirmRow label='Tax Percantage:' value={formData.taxPercantage} />
+      <DataConfirmRow label='Tax Percantage:' value={formData.taxPercantage} /> */}
 
       <div className='my-4 flex items-center'>
         <label htmlFor='agreeToTerms'>I Agree to Terms of Services</label>

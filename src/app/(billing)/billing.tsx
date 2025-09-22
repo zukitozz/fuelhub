@@ -26,6 +26,7 @@ type FormInputs = {
   gal_diesel: number;
   gal_regular: number;
   gal_premium: number;
+  gal_precio: number;
 }
 
 export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, conductores }: Props) => {

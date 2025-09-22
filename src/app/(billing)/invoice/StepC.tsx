@@ -1,10 +1,8 @@
+import { IBillingForm } from '@/interfaces';
 import { ChangeEvent } from 'react';
 
 interface StepCProps {
-  formData: {
-    incomePerMonth: number;
-    taxPercantage: number;
-  };
+  formData: IBillingForm;
   handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePrevStep: () => void;
   handleNextStep: () => void;
@@ -24,23 +22,23 @@ const StepC: React.FC<StepCProps> = ({
 
       <div className='my-2'>
         <label>Income Per Month</label>
-        <input
+        {/* <input
           type='number'
           name='incomePerMonth'
           value={formData.incomePerMonth}
           onChange={(e) => handleChangeInput(e)}
           className='w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600'
-        />
+        /> */}
       </div>
       <div className='my-2'>
         <label>Tax Percantage</label>
-        <input
+        {/* <input
           type='number'
           name='taxPercantage'
           value={formData.taxPercantage}
           onChange={(e) => handleChangeInput(e)}
           className='w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600'
-        />
+        /> */}
       </div>
 
       <div className='my-2 flex justify-between items-center'>
