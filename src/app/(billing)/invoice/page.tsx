@@ -1,3 +1,4 @@
+import { initialData } from "@/seed/seed";
 import SimpleMultiStepForm from "./SimpleMultiStepForm";
 
 export default function InvoicePage() {
@@ -7,7 +8,7 @@ export default function InvoicePage() {
       <br />
       <br />
       <br />
-      <SimpleMultiStepForm showStepNumber={true} />
+      <SimpleMultiStepForm initialData={initialData}/>
     </div>
   );
 }

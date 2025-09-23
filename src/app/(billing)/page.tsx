@@ -8,7 +8,7 @@ export default function Home() {
       <Title
         title="Guias de remisión transportisa"
         subtitle="Emisión de facturas y guías transportista y remitente"
-        className="mb-2"
+        className="mb-1"
       />
       <SimpleMultiStepForm initialData={initialData} />
     </>

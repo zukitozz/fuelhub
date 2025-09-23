@@ -11,7 +11,7 @@ interface StepAProps {
 const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextStep, origenes, conductores, vehiculos }) => {
   return (
     <div>
-      <h1 className='my-10 text-xl font-bold text-blue-900'>
+      <h1 className='my-2 text-xl font-bold text-blue-900'>
         Seleccione: Información del origen, conductor y vehiculo
       </h1>
       <div className='my-2'>

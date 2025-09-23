@@ -1,5 +1,10 @@
+import { IConductor } from "./conductor.interface";
+import { IDestinatario } from "./destinatario.interface";
 import { IItem } from "./item.interface";
+import { IOrigen } from "./origen.interface";
 import { IReceptor } from "./receptor.interface";
+import { IRemitente } from "./remitente.interface";
+import { IVehiculo } from "./vehiculo.interface";
 
 export interface IBilling {
     id?: string;
@@ -39,4 +44,36 @@ export interface IBilling {
     ruc: string;
     enviado?: boolean; 
     items?: IItem[];  
+}
+
+export interface IBillingForm {
+  ubigeo_origen: string;
+  placa_vehiculo: string;
+  dni_conductor: string;
+  detalle_envio: IBillingFormDetail[];
+}
+
+export interface IBillingFormDetail {
+  ruc_remitente: string; 
+  ruc_destinatario: string;
+  gal_diesel: number;
+  gal_regular: number;
+  gal_premium: number;
+  gal_precio: number;
+}
+
+export interface IBillingCompleteForm {
+  origen: IOrigen;
+  vehiculo: IVehiculo;
+  conductor: IConductor;
+  detalle_items: IBillingCompleteFormDetail[];
+}
+
+export interface IBillingCompleteFormDetail {
+  remitente: IRemitente; 
+  destinatario: IDestinatario;
+  gal_diesel: number;
+  gal_regular: number;
+  gal_premium: number;
+  gal_precio: number;
 }
