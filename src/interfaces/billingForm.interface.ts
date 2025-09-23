@@ -1,9 +1,13 @@
 export interface IBillingForm {
   ubigeo_origen: string;
   placa_vehiculo: string;
+  dni_conductor: string;
+  detalle_envio: IBillingFormDetail[];
+}
+
+export interface IBillingFormDetail {
   ruc_remitente: string; 
   ruc_destinatario: string;
-  dni_conductor: string;
   gal_diesel: number;
   gal_regular: number;
   gal_premium: number;

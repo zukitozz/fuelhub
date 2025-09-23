@@ -18,11 +18,12 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
         <label htmlFor="ubigeo_origen" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Punto de origen</label>
         <select 
           name="ubigeo_origen"
-          onChange={handleChangeInput}
+          onChange={handleChangeInput} 
+          defaultValue={ formData.ubigeo_origen }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
-            <option defaultValue={''}>Seleccione</option>
+            <option value={''}>Seleccione</option>
             {origenes.map((field) => (
-                <option key={ field.id } value={ field.ubigeo } selected={formData.ubigeo_origen === field.ubigeo}>{ field.nombre }</option>
+                <option key={ field.id } value={ field.ubigeo }>{ field.nombre }</option>
             ))}
         </select>
       </div>
@@ -30,9 +31,10 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
         <label htmlFor="dni_conductor" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Conductor</label>
         <select 
           name="dni_conductor" 
-          onChange={handleChangeInput}
+          onChange={handleChangeInput} 
+          defaultValue={ formData.dni_conductor }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
-            <option defaultValue={''}>Seleccione</option>
+            <option value={''}>Seleccione</option>
             {conductores.map((field) => (
                 <option key={ field.numero_documento } value={ field.numero_documento }>{ field.nombres }</option>
             ))}
@@ -43,8 +45,9 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
         <select 
           name="placa_vehiculo" 
           onChange={handleChangeInput}
+          defaultValue={ formData.placa_vehiculo }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
-            <option defaultValue={''}>Seleccione</option>
+            <option value={''}>Seleccione</option>
             {vehiculos.map((field) => (
                 <option key={ field.placa } value={ field.placa }>{ field.placa }</option>
             ))}

@@ -5,19 +5,19 @@ interface StepCProps {
   formData: IBillingForm;
   handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePrevStep: () => void;
-  handleNextStep: () => void;
+  handleSubmitFormData: () => void;
 }
 
 const StepC: React.FC<StepCProps> = ({
   formData,
   handleChangeInput,
   handlePrevStep,
-  handleNextStep,
+  handleSubmitFormData,
 }) => {
   return (
     <div>
       <h1 className='mt-2 text-xl font-bold text-blue-900'>
-        Step C: Customer Financial Info
+        Confirmar: Revise la información registrada
       </h1>
 
       <div className='my-2'>
@@ -49,10 +49,10 @@ const StepC: React.FC<StepCProps> = ({
           Prev
         </button>
         <button
-          className='bg-green-400 px-4 py-2 rounded-xl'
-          onClick={handleNextStep}
+          className='bg-blue-400 px-4 py-2 rounded-xl'
+          onClick={handleSubmitFormData}
         >
-          Next
+          Submit
         </button>
       </div>
     </div>

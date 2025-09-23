@@ -1,93 +1,115 @@
-import { IBillingForm } from "@/interfaces";
+import { IBillingForm, IBillingFormDetail, IDestinatario, IRemitente } from "@/interfaces";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
 
 interface StepBProps {
   formData: IBillingForm;
-  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  remitentes: IRemitente[];
+  destinatarios: IDestinatario[];
+  handleAddDetail: (detail: IBillingFormDetail) => void;
   handlePrevStep: () => void;
   handleNextStep: () => void;
 }
 
+const detailFormData: IBillingFormDetail = {
+  ruc_remitente: "",
+  ruc_destinatario: "",
+  gal_diesel: 0,
+  gal_regular: 0,
+  gal_premium: 0,
+  gal_precio: 0
+};
+
 const StepB: React.FC<StepBProps> = ({
   formData,
-  handleChangeInput,
+  remitentes,
+  destinatarios,
+  handleAddDetail,
   handlePrevStep,
   handleNextStep,
 }) => {
+
+  const [formDetailData, setFormDetailData] = useState(detailFormData);
+
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormDetailData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  }
+
   return (
     <div>
       <h1 className='my-10 text-xl font-bold text-blue-900'>
-        Ingrese: Cantidad y Precio de los combustibles
+        Ingrese: Información del envío y precios
       </h1>
-      <div className="my-2 grid grid-flow-col">
-        <div className="text-lg font-bold content-center">DIESEL DB</div>
-        <div>
-          <label htmlFor="gal_diesel" className="block text-gray-700 font-bold text-lg">Cantidad:</label>
-          <input 
-            type="text" 
-            name="gal_diesel" 
-            value={formData.gal_diesel}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            />
-        </div>
-        <div>
-          <label htmlFor="precio_diesel" className="block text-gray-700 font-bold text-lg">Precio:</label>
-          {/* <input 
-            type="text" 
-            id="precio_diesel" 
-            value={formData.precio_diesel}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            /> */}
-        </div>
+      <div className='my-2'>
+        <label htmlFor="ruc_remitente" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Remitente</label>
+        <select 
+          name="ruc_remitente"
+          onChange={handleChangeInput} 
+          defaultValue={ '' }
+          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+            <option value={''}>Seleccione</option>
+            {remitentes.map((field) => (
+                <option key={ field.numero_documento } value={ field.numero_documento }>{ field.razon_social }</option>
+            ))}
+        </select>       
       </div>
-      <div className="my-2 grid grid-flow-col">
-        <div className="text-xl font-bold content-center">PREMIUM</div>
-        <div>
-          <label htmlFor="gal_premium" className="block text-gray-700 font-bold text-lg">Cantidad:</label>
-          <input 
-            type="text" 
-            name="gal_premium" 
-            value={formData.gal_premium}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            />
-        </div>
-        <div>
-          <label htmlFor="precio_premium" className="block text-gray-700 font-bold text-lg">Precio:</label>
-          {/* <input 
-            type="text" 
-            id="precio_premium" 
-            value={formData.precio_premium}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            /> */}
-        </div>
-      </div>
-      <div className="my-2 grid grid-flow-col">
-        <div className="text-xl font-bold content-center">REGULAR</div>
-        <div>
-          <label htmlFor="gal_regular" className="block text-gray-700 font-bold text-lg">Cantidad:</label>
-          <input 
-            type="text" 
-            name="gal_regular" 
-            value={formData.gal_regular}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            />
-        </div>
-        <div>
-          <label htmlFor="precio_regular" className="block text-gray-700 font-bold text-lg">Precio:</label>
-          {/* <input 
-            type="text" 
-            id="precio_regular" 
-            value={formData.precio_regular}
-            className="border border-gray-300 p-2 rounded-md flex-grow"
-            onChange={(e) => handleChangeInput(e)}
-            /> */}
-        </div>
+      <div className='my-2'>
+        <label htmlFor="ruc_destinatario" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Destinatario</label>
+        <select 
+          name="ruc_destinatario"
+          onChange={handleChangeInput} 
+          defaultValue={ '' }
+          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+            <option value={''}>Seleccione</option>
+            {destinatarios.map((field) => (
+                <option key={ field.numero_documento } value={ field.numero_documento }>{ field.razon_social }</option>
+            ))}
+        </select>       
       </div>      
-
+      <div className='my-2'></div>
+      <div className='my-2'>
+        <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Precio por galón</label>
+        <input 
+          type="text" 
+          name="gal_precio" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+          />     
+      </div>      
+      <div className='my-2'>
+        <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">DIESEL DB</label>
+        <input 
+          type="text" 
+          name="gal_diesel" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+          />     
+      </div>
+      <div className='my-2'>
+        <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PREMIUM</label>
+        <input 
+          type="text" 
+          name="gal_premium" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+          />   
+      </div>
+      <div className='my-2'>
+        <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">REGULAR</label>
+        <input 
+          type="text" 
+          name="gal_regular" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+          />   
+      </div>
       <div className='my-2 flex justify-between items-center'>
         <button
           className='bg-yellow-400 px-4 py-2 rounded-xl'
@@ -96,12 +118,49 @@ const StepB: React.FC<StepBProps> = ({
           ANTERIOR
         </button>
         <button
+          className='bg-purple-400 px-4 py-2 rounded-xl'
+          onClick={() => handleAddDetail({...formDetailData})}
+        >
+          AGREGAR
+        </button>        
+        <button
           className='bg-green-400 px-4 py-2 rounded-xl'
           onClick={handleNextStep}
         >
           SIGUIENTE
         </button>
       </div>
+      <div className='my-2'>
+        <h2 className='my-10 text-lg font-bold text-blue-900'>
+          Detalle de envíos agregados
+        </h2>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100">
+            <thead className="text-xs text-black uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
+              <tr>
+                <th scope="col" className="px-6 py-3 ">Remitente</th>
+                <th scope="col" className="px-6 py-3">Destinatario</th>
+                <th scope="col" className="px-6 py-3">Precio</th>
+                <th scope="col" className="px-6 py-3">Diesel</th>
+                <th scope="col" className="px-6 py-3">Premium</th>
+                <th scope="col" className="px-6 py-3">Regular</th>
+              </tr>
+            </thead>
+            <tbody className="text-xs text-black uppercase dark:text-white">
+              { formData.detalle_envio.map( ( detail, index ) => (
+                <tr key={ detail.ruc_remitente || detail.ruc_destinatario }>
+                  <td>{ detail.ruc_remitente }</td>
+                  <td>{ detail.ruc_destinatario }</td>
+                  <td>{ detail.gal_precio }</td>
+                  <td>{ detail.gal_diesel }</td>
+                  <td>{ detail.gal_premium }</td>
+                  <td>{ detail.gal_regular }</td>
+                </tr>
+              ) ) }
+            </tbody>
+          </table>
+        </div>
+      </div>      
     </div>
   );
 };

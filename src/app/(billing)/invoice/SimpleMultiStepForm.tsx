@@ -6,18 +6,13 @@ import StepC from './StepC';
 import StepD from './StepD';
 import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
-import { IBillingForm } from '@/interfaces';
+import { IBillingForm, IBillingFormDetail } from '@/interfaces';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
   placa_vehiculo: '',
-  ruc_remitente: '',
-  ruc_destinatario: '',
   dni_conductor: '',
-  gal_diesel: 0,
-  gal_regular: 0,
-  gal_premium: 0,
-  gal_precio: 0
+  detalle_envio: []
 };
 
 const stepsArray = ['A', 'B', 'C', 'D'];
@@ -29,13 +24,12 @@ interface SimpleMultiStepFormProps {
 const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }) => {
   const [step, setStep] = useState('A');
   const [formData, setFormData] = useState(initialFormData);
-  const { origenes, conductores, vehiculos } = initialData;
+  const { origenes, conductores, vehiculos, remitentes, destinatarios } = initialData;
 
   // We need a method to go to next step
   const handleNextStep = () => {
     if (step === 'A') setStep('B');
     else if (step === 'B') setStep('C');
-    else if (step === 'C') setStep('D');
   };
 
   // We need a method to go to prev step
@@ -62,6 +56,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       ...formData,
       [fieldName]: fieldValue,
     });
+  };
+
+  const handleAddDetail = (detail: IBillingFormDetail) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      detalle_envio: [...prevData.detalle_envio, detail],
+    }));
   };
 
   // We need a method to do final operation
@@ -93,22 +94,16 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       ) : null}
       {step === 'B' ? (
         <StepB
+          remitentes={remitentes}
+          destinatarios={destinatarios}
           formData={formData}
-          handleChangeInput={handleChangeInput}
+          handleAddDetail={handleAddDetail}
           handlePrevStep={handlePrevStep}
           handleNextStep={handleNextStep}
         />
       ) : null}
       {step === 'C' ? (
         <StepC
-          formData={formData}
-          handleChangeInput={handleChangeInput}
-          handlePrevStep={handlePrevStep}
-          handleNextStep={handleNextStep}
-        />
-      ) : null}
-      {step === 'D' ? (
-        <StepD
           formData={formData}
           handleChangeInput={handleChangeInput}
           handlePrevStep={handlePrevStep}
