@@ -1,5 +1,5 @@
 import { IBillingCompleteForm } from '@/interfaces';
-import { ChangeEvent } from 'react';
+import { MdDelete } from 'react-icons/md';
 
 interface StepCProps {
   completeFormData: IBillingCompleteForm;
@@ -32,9 +32,10 @@ const StepC: React.FC<StepCProps> = ({
                 <th scope="col" className="px-1 py-3">Diesel</th>
                 <th scope="col" className="px-1 py-3">Premium</th>
                 <th scope="col" className="px-1 py-3">Regular</th>
+                <th scope="col" className="px-6 py-1">Eliminar</th>
               </tr>
             </thead>
-            <tbody className="text-xs text-black uppercase dark:text-white">
+            <tbody className="text-base text-black uppercase dark:text-white">
               { completeFormData.detalle_items.map( ( detail, index ) => (
                 <tr key={ detail.remitente.razon_social || detail.destinatario.razon_social }>
                   <td>{ detail.remitente.razon_social }</td>
@@ -43,6 +44,14 @@ const StepC: React.FC<StepCProps> = ({
                   <td className='text-right'>GAL { detail.gal_diesel }</td>
                   <td className='text-right'>GAL { detail.gal_premium }</td>
                   <td className='text-right'>GAL { detail.gal_regular }</td>
+                  <td className='text-center'>
+                    <div className='flex items-center gap-2 cursor-pointer hover:text-blue-600'
+                      onClick={() => {
+                        alert('Eliminar el detalle - TODO');
+                      }}
+                    ><MdDelete /><span>Eliminar</span>
+                    </div>
+                  </td>                  
                 </tr>
               ) ) }
             </tbody>

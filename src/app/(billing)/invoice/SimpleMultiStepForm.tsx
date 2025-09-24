@@ -83,6 +83,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         ...prevData,
         detalle_envio: [...prevData.detalle_envio, detail],
       }));
+      alert('Detalle agregado exitosamente');
     }else{
         alert('Error!!!!!!   You must fill all detail fields!!!!');
         return;
@@ -139,20 +140,23 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             items.push(item_premium);
             item_number += 1;
         }
-        const gr_remitente: ICarrier = {
-          serie: Constants.SERIE_GUIA_REMISION_REMITENTE,
+        const peso_combustible = gal_diesel * Constants.PESO_GALON_DIESEL + (gal_premium + gal_regular) * Constants.PESO_GALON_GASOHOL;
+        const peso_bruto = Constants.PESO_BRUTO_DEFAULT + peso_combustible;    
+        const gr_transportista: ICarrier = {
+          serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
+          fecha_traslado: new Date().toLocaleString('sv-SE', {timeZone: 'America/Lima' }),
           remitente,
           destinatario,
           conductor,
           vehiculo,
           usuario: Constants.USUARIO_DEFAULT,
-          tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION,
+          tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
           items,
           llegada_direccion: destinatario.direccion,
           llegada_ubigeo: destinatario.ubigeo,
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
-          peso_bruto: 100,
+          peso_bruto,
           ruc: Constants.RUC_EMPRESA
         };
         const cantidad = gal_diesel + gal_premium + gal_regular;
@@ -177,23 +181,25 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             items: [
                 { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion: 'Item 1', medida: 'NIU', codigo: 'COD' },
             ],
-            tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION,
+            tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
             numeracion_documento_afectado: 'EG01-1',
             motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA'                 
         }
-        const gr_transportista: ICarrier = {
+        const gr_remitente: ICarrier = {
+          serie: Constants.SERIE_GUIA_REMISION_REMITENTE,
+          fecha_traslado: new Date().toLocaleString('sv-SE', {timeZone: 'America/Lima' }),
           remitente,
           destinatario,
           conductor,
           vehiculo,
-          usuario: '',
-          tipo_comprobante: '',
-          llegada_direccion: '',
-          llegada_ubigeo: '',
-          partida_direccion: '',
-          partida_ubigeo: '',
-          peso_bruto: 0,
-          ruc: ''
+          usuario: Constants.USUARIO_DEFAULT,
+          tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_REMITENTE,
+          llegada_direccion: destinatario.direccion,
+          llegada_ubigeo: destinatario.ubigeo,
+          partida_direccion: origen.direccion,
+          partida_ubigeo: origen.ubigeo,
+          peso_bruto,
+          ruc: remitente.numero_documento
         }
         return {
           factura,
@@ -209,8 +215,14 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           console.log( respCarrier.message );
           return;
       }
+      console.log('Registrando Guia de Remision Transportista...', gr_transportista );
+      const respCarrierTransportista = await registerBilling( gr_transportista );
+      if ( !respCarrierTransportista.result ) {
+          console.log( respCarrierTransportista.message );
+          return;
+      }      
       console.log('Registrando Factura...', factura);
-      const carrier = respCarrier.comprobante as ICarrier;
+      const carrier = respCarrierTransportista.comprobante as ICarrier;
       factura.numeracion_documento_afectado = carrier.numeracion;
       const respBilling = await registerBilling( factura );
       if ( !respBilling.result ) {
