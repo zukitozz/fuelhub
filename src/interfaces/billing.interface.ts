@@ -60,6 +60,9 @@ export interface IBillingFormDetail {
   gal_regular: number;
   gal_premium: number;
   gal_precio: number;
+  scop_diesel: string;
+  scop_regular: string;
+  scop_premium: string;
 }
 
 export interface IBillingCompleteForm {
@@ -76,4 +79,7 @@ export interface IBillingCompleteFormDetail {
   gal_regular: number;
   gal_premium: number;
   gal_precio: number;
+  scop_diesel: string;
+  scop_regular: string;
+  scop_premium: string;  
 }

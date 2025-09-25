@@ -19,7 +19,10 @@ const detailFormData: IBillingFormDetail = {
   gal_diesel: 0,
   gal_regular: 0,
   gal_premium: 0,
-  gal_precio: 0
+  gal_precio: 0,
+  scop_diesel: "",
+  scop_regular: "",
+  scop_premium: ""
 };
 
 const StepB: React.FC<StepBProps> = ({

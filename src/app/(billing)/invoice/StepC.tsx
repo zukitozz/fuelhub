@@ -1,16 +1,18 @@
-import { IBillingCompleteForm } from '@/interfaces';
+import { IBillingCompleteForm, IBillingCompleteFormDetail } from '@/interfaces';
 import { MdDelete } from 'react-icons/md';
 
 interface StepCProps {
   completeFormData: IBillingCompleteForm;
   handlePrevStep: () => void;
   handleSubmitFormData: () => void;
+  handleDeleteDetail: (detail: IBillingCompleteFormDetail) => void;
 }
 
 const StepC: React.FC<StepCProps> = ({
   completeFormData,
   handlePrevStep,
   handleSubmitFormData,
+  handleDeleteDetail
 }) => {
   return (
     <div>
@@ -22,32 +24,38 @@ const StepC: React.FC<StepCProps> = ({
       <DataConfirmRow label='CONDUCTOR:' value={completeFormData.conductor.nombres} />
       <DataConfirmRow label='VEHICULO:' value={completeFormData.vehiculo.placa} />
 
-      <div className='my-2'>
-          <table className="w-full text-lg text-left rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100">
-            <thead className="text-lg text-black uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
+      <div className='my-2 space-x-12'>
+          <table className="w-full text-lg text-center rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100 border border-gray-300 rounded-lg border-separate">
+            <thead className="text-lg text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
               <tr>
-                <th scope="col" className="px-4 py-3 ">Remitente</th>
+                <th scope="col" className="px-4 py-3">Remitente</th>
                 <th scope="col" className="px-4 py-3">Destinatario</th>
                 <th scope="col" className="px-1 py-3">Precio</th>
                 <th scope="col" className="px-1 py-3">Diesel</th>
+                <th scope="col" className="px-1 py-3">Scop</th>
                 <th scope="col" className="px-1 py-3">Premium</th>
+                <th scope="col" className="px-1 py-3">Scop</th>
                 <th scope="col" className="px-1 py-3">Regular</th>
+                <th scope="col" className="px-1 py-3">Scop</th>
                 <th scope="col" className="px-6 py-1">Eliminar</th>
               </tr>
             </thead>
-            <tbody className="text-base text-black uppercase dark:text-white">
+            <tbody className="text-sm text-black dark:text-white border-b border-gray-300">
               { completeFormData.detalle_items.map( ( detail, index ) => (
                 <tr key={ detail.remitente.razon_social || detail.destinatario.razon_social }>
-                  <td>{ detail.remitente.razon_social }</td>
-                  <td>{ detail.destinatario.razon_social }</td>
+                  <td className='text-center'>{ detail.remitente.razon_social }</td>
+                  <td className='text-center'>{ detail.destinatario.razon_social }</td>
                   <td className='text-right'>S/ { detail.gal_precio }</td>
-                  <td className='text-right'>GAL { detail.gal_diesel }</td>
-                  <td className='text-right'>GAL { detail.gal_premium }</td>
-                  <td className='text-right'>GAL { detail.gal_regular }</td>
+                  <td className='text-right'>{ detail.gal_diesel }</td>
+                  <td className='text-right'>{ detail.scop_diesel }</td>
+                  <td className='text-right'>{ detail.gal_premium }</td>
+                  <td className='text-right'>{ detail.scop_premium }</td>             
+                  <td className='text-right'>{ detail.gal_regular }</td>
+                  <td className='text-right'>{ detail.scop_regular }</td>
                   <td className='text-center'>
                     <div className='flex items-center gap-2 cursor-pointer hover:text-blue-600'
                       onClick={() => {
-                        alert('Eliminar el detalle - TODO');
+                        handleDeleteDetail(detail);
                       }}
                     ><MdDelete /><span>Eliminar</span>
                     </div>

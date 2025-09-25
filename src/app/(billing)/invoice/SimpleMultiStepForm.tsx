@@ -7,8 +7,9 @@ import StepC from './StepC';
 import StepD from './StepD';
 import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
-import { IBilling, IBillingCompleteForm, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
+import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
+import { set } from 'react-hook-form';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -92,7 +93,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   const handleSubmitFormData = () => {
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
-        const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio } = item;
+        const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
         const items: ICarrierItem[] = [];
         let item_number = 1;
         if(gal_diesel && gal_diesel > 0) {
@@ -105,7 +106,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
                 codigo_partida: "",
                 codigo: "GLI",
                 medida: "GLI",
-                descripcion: "DIESEL B5 S50 UV N SCOP 12517768837",
+                descripcion: `DIESEL B5 S50 UV N SCOP ${scop_diesel}`,
             }
             items.push(item_diesel);
             item_number += 1;
@@ -120,7 +121,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
                 codigo_partida: "",
                 codigo: "GLI",
                 medida: "GLI",
-                descripcion: "GASOHOL REGULAR N SCOP 12517728035",
+                descripcion: `GASOHOL REGULAR N SCOP ${scop_regular}`,
             }
             items.push(item_regular);
             item_number += 1;
@@ -135,7 +136,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
                 codigo_partida: "",
                 codigo: "GLI",
                 medida: "GLI",
-                descripcion: "GASOHOL PREMIUM N SCOP 12517728035",
+                descripcion: `GASOHOL PREMIUM N SCOP ${scop_premium}`,
             }
             items.push(item_premium);
             item_number += 1;
@@ -250,7 +251,10 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           gal_diesel: item.gal_diesel,
           gal_regular: item.gal_regular,
           gal_premium: item.gal_premium,
-          gal_precio: item.gal_precio,           
+          gal_precio: item.gal_precio,
+          scop_diesel: item.scop_diesel,
+          scop_regular: item.scop_regular,
+          scop_premium: item.scop_premium        
       }));     
       setCompleteFormData({
           origen,
@@ -260,13 +264,25 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       });
       setStep('C');
   }  
+  const handleDeleteDetail = (detail: IBillingCompleteFormDetail) => {
+    console.log(detail);
+    setFormData((prevData) => ({
+      ...prevData,
+      detalle_envio: prevData.detalle_envio.filter((d) => (d.ruc_remitente !== detail.remitente.numero_documento && d.ruc_destinatario !== detail.destinatario.numero_documento)),
+    }));
+    setCompleteFormData((prevData) => ({
+      ...prevData,
+      detalle_items: prevData.detalle_items.filter((d) => (d.remitente.numero_documento !== detail.remitente.numero_documento && d.destinatario.numero_documento !== detail.destinatario.numero_documento)),
+    }));
+    alert('Detalle eliminado exitosamente');
+  };
 
   useEffect(() => {
     console.log(formData);
   }, [formData]);
 
   return (
-    <div className='w-[600px] max-w-full px-6 py-1 mx-auto rounded-lg'>
+    <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>
       {/* // Render Steps */}
       {step === 'A' ? (
         <StepA
@@ -293,6 +309,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           completeFormData={completeFormData}
           handlePrevStep={handlePrevStep}
           handleSubmitFormData={handleSubmitFormData}
+          handleDeleteDetail={handleDeleteDetail}
         />
       ) : null}
       {step === 'Final' ? <StepFinal /> : null}
