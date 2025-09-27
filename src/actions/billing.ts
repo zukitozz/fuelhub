@@ -47,6 +47,9 @@ export const listBilling = async(url: string) => {
       "Cache-Control": "no-cache",
       "Content-Type": "application/x-www-form-urlencoded",
       },
+      params: {
+        fecha_emision: '2025-09-26'
+      }
     });
     console.log(historic);
     return {
