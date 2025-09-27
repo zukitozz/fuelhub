@@ -6,11 +6,12 @@ import { Title } from "@/components";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoCardOutline } from "react-icons/io5";
+import { Constants } from '@/constants/Constants';
 
 const fetcher = (url: string) => listBilling(url)
 
 export default function HistoricPage() {
-    const { data, error } = useSWR('https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod/billing', fetcher);
+    const { data, error } = useSWR(`${Constants.API_URL}/billing`, fetcher);
     if (error) {
         redirect("/");
     }
@@ -71,7 +72,7 @@ export default function HistoricPage() {
                     {item.destinatario?.razon_social??item.receptor.razon_social}
                     </td>                                   
                     <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    {item.respuesta_mifact.errors === '' ? (
+                    {item.respuesta_mifact["errors"] === '' ? (
                         <>
                         <IoCardOutline className="text-green-800" />
                         <span className="mx-2 text-green-800">Aceptado</span>

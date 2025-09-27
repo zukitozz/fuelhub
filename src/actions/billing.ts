@@ -1,11 +1,11 @@
+import { Constants } from "@/constants";
 import { IBilling, ICarrier } from "@/interfaces";
-import posApi from "../../api/posApi";
 import axios from "axios";
 
 export const registerBilling = async( billing: IBilling|ICarrier ) => {
   try {
-    
-    const response = await axios.post('https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod/billing', {
+  
+    const response = await axios.post(`${Constants.API_URL}/billing`, {
       ...billing
     },{headers: {'content-type': 'application/json'}});
 

@@ -1,5 +1,5 @@
 import { IBillingForm, IBillingFormDetail, IDestinatario, IRemitente } from "@/interfaces";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 
 interface StepBProps {
   formData: IBillingForm;
@@ -16,7 +16,10 @@ const detailFormData: IBillingFormDetail = {
   gal_diesel: 0,
   gal_regular: 0,
   gal_premium: 0,
-  gal_precio: 0
+  gal_precio: 0,
+  scop_diesel: "",
+  scop_regular: "",
+  scop_premium: ""
 };
 
 const StepB: React.FC<StepBProps> = ({
@@ -37,7 +40,6 @@ const StepB: React.FC<StepBProps> = ({
       [name]: value
     }));
   }
-
   return (
     <div>
       <h1 className='my-2 text-xl font-bold text-blue-900'>
@@ -68,83 +70,90 @@ const StepB: React.FC<StepBProps> = ({
                 <option key={ field.numero_documento } value={ field.numero_documento }>{ field.razon_social }</option>
             ))}
         </select>       
-      </div>      
-      <div className='my-2'></div>
-      <div className='my-2'>
-        <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Precio por galón</label>
+      </div>   
+      <div className='inline-flex items-center space-x-12 my-2'>
+        <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL DBDIESEL</label>
         <input 
-          type="text" 
-          name="gal_precio" 
-          defaultValue={ '' }
-          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
-          onChange={(e) => handleChangeInput(e)}
-          />     
-      </div>      
-      <div className='inline-flex items-center space-x-4 my-2'>
-        <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">DIESEL</label>
-        <input 
-          type="text" 
+          type="number" 
+          step="0.001" 
           name="gal_diesel" 
           defaultValue={ '' }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
-          />     
-        <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PREMIUM</label>
+        />
+        <label htmlFor="scop_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">SCOPE</label>
         <input 
           type="text" 
+          name="scop_diesel" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+        />        
+      </div>
+      <div className='inline-flex items-center space-x-12 my-2'>
+        <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL PREMIUM</label>
+        <input 
+          type="number" 
+          step="0.001" 
           name="gal_premium" 
           defaultValue={ '' }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
-          />      
-        <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">REGULAR</label>
+          />
+        <label htmlFor="scop_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">SCOPE</label>
         <input 
           type="text" 
+          name="scop_premium" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+        />            
+      </div>
+      <div className='inline-flex items-center space-x-12 my-2'>   
+        <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">REGULAR</label>
+        <input 
+          type="number" 
+          step="0.001" 
           name="gal_regular" 
           defaultValue={ '' }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
-          />                 
+          />
+        <label htmlFor="scop_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">SCOPE</label>
+        <input 
+          type="text" 
+          name="scop_regular" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+        />                          
       </div>
-      <div className='my-2 flex justify-between items-center'>
+      <div className='inline-flex items-center space-x-12 my-2 justify-between w-full'>
+        <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PRECIO</label>
+        <input 
+          type="number" 
+          step="0.1" 
+          name="gal_precio" 
+          defaultValue={ '' }
+          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          onChange={(e) => handleChangeInput(e)}
+          /> 
         <button
-          className='bg-purple-400 px-4 py-2 rounded-xl'
-          onClick={() => handleAddDetail({...formDetailData})}
+          className='bg-purple-400 px-4 py-2 rounded-xl w-full'
+          onClick={() => {
+            handleAddDetail({...formDetailData})
+            console.log("limpiando data del detalle");
+          }}
         >
           AGREGAR
-        </button>
+        </button>          
       </div>
       <div className='my-2'>
-        <h2 className='my-10 text-lg font-bold text-blue-900'>
-          Detalle de envíos agregados
-        </h2>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-base text-left rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100">
-            <thead className="text-base text-black uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
-              <tr>
-                <th scope="col" className="px-6 py-3 ">Remitente</th>
-                <th scope="col" className="px-6 py-3">Destinatario</th>
-                <th scope="col" className="px-6 py-3">Precio</th>
-                <th scope="col" className="px-6 py-3">Diesel</th>
-                <th scope="col" className="px-6 py-3">Premium</th>
-                <th scope="col" className="px-6 py-3">Regular</th>
-              </tr>
-            </thead>
-            <tbody className="text-xs text-black uppercase dark:text-white">
-              { formData.detalle_envio.map( ( detail, index ) => (
-                <tr key={ detail.ruc_remitente || detail.ruc_destinatario }>
-                  <td>{ detail.ruc_remitente }</td>
-                  <td>{ detail.ruc_destinatario }</td>
-                  <td>S/ { detail.gal_precio }</td>
-                  <td>GAL { detail.gal_diesel }</td>
-                  <td>GAL { detail.gal_premium }</td>
-                  <td>GAL { detail.gal_regular }</td>
-                </tr>
-              ) ) }
-            </tbody>
-          </table>
-        </div>
-      </div>  
+        Detalle agregado: { formData.detalle_envio.length }
+      </div>
+      <div className='my-2'>
+        <hr />
+      </div>      
       <div className='my-2 flex justify-between items-center'>
         <button
           className='bg-yellow-400 px-4 py-2 rounded-xl'
