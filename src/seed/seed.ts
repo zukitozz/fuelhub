@@ -24,7 +24,7 @@ export const initialData: SeedData = {
             direccion: 'CAR. PANAMERICANA SUR KM. 87.5 LOTE. 1 LIMA CAÑETE MALA',
             correo: '987654321',
             nombre_comercial: 'GRUPO EMPRESARIAL NONATO E.I.R.L.',
-            token_mifact: ""
+            token_mifact: "IolOxCvrKdSnZ0lYcWH/eA=="
         },
         {
             tipo_documento: '6',
@@ -34,7 +34,7 @@ export const initialData: SeedData = {
             direccion: 'CAR. HUAURA SAYAN KM. 40.5 LOTE. 7 SEC. SAN JUAN DE CAÑAS LIMA HUAURA SAYAN',
             correo: '987654321',
             nombre_comercial: 'GRUPO NONATO ANDAHUASI E.I.R.L.',
-            token_mifact: ""
+            token_mifact: "l7Eo1p72cF+nZ0lYcWH/eA=="
         },
         {
             tipo_documento: '6',
@@ -44,7 +44,7 @@ export const initialData: SeedData = {
             direccion: 'KM. 87.5 LOTE. 07 C.P. CARRETERA PANAMERICANA NO LIMA HUARAL CHANCAY',
             correo: '987654321',
             nombre_comercial: 'GRUPO NONATO CHANCAYLLO E.I.R.L.',
-            token_mifact: ""
+            token_mifact: "l7Eo1p72cF+6dkooMaHrWg=="
         },
         {
             tipo_documento: '6',
@@ -54,7 +54,7 @@ export const initialData: SeedData = {
             direccion: 'AV. AVENIGA G MZA. W4 LOTE. 1 RES. GRUPO RESIDENCIAL D1 PROV. CONST. DEL CALLAO PROV. CONST',
             correo: '987654321',
             nombre_comercial: 'SIRCON PACHACUTEC E.I.R.L.',
-            token_mifact: ""
+            token_mifact: "tOcEEdPoW/SnZ0lYcWH/eA=="
         }                        
     ],
     destinatarios: [

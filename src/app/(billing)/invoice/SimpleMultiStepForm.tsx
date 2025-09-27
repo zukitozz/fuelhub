@@ -1,15 +1,13 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { registerBilling } from "@/actions";
 import StepA from './StepA';
 import StepB from './StepB';
 import StepC from './StepC';
-import StepD from './StepD';
 import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
 import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
-import { set } from 'react-hook-form';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -87,7 +85,6 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       alert('Detalle agregado exitosamente');
     }else{
         alert('Error!!!!!!   You must fill all detail fields!!!!');
-        return;
     }
   };
   const handleSubmitFormData = () => {
@@ -139,10 +136,9 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
                 descripcion: `GASOHOL PREMIUM N SCOP ${scop_premium}`,
             }
             items.push(item_premium);
-            item_number += 1;
         }
-        const peso_combustible = gal_diesel * Constants.PESO_GALON_DIESEL + (gal_premium + gal_regular) * Constants.PESO_GALON_GASOHOL;
-        const peso_bruto = Constants.PESO_BRUTO_DEFAULT + peso_combustible;    
+        const peso_combustible = +gal_diesel * Constants.PESO_GALON_DIESEL + (+gal_premium + +gal_regular) * Constants.PESO_GALON_GASOHOL;
+        const peso_bruto = Constants.PESO_BRUTO_DEFAULT + +peso_combustible;    
         const gr_transportista: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
           fecha_traslado: new Date().toLocaleString('sv-SE', {timeZone: 'America/Lima' }),
@@ -160,8 +156,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           peso_bruto,
           ruc: Constants.RUC_EMPRESA
         };
-        const cantidad = gal_diesel + gal_premium + gal_regular;
-        const precio_unitario = gal_precio;
+        const cantidad = +gal_diesel + +gal_premium + +gal_regular;
+        const precio_unitario = +gal_precio;
         const valor_unitario = +(precio_unitario / 1.18).toFixed(2);
         const igv_unitario = +(precio_unitario - valor_unitario).toFixed(2);
         const precio = +(cantidad * precio_unitario).toFixed(2);
@@ -195,6 +191,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           vehiculo,
           usuario: Constants.USUARIO_DEFAULT,
           tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_REMITENTE,
+          items,
           llegada_direccion: destinatario.direccion,
           llegada_ubigeo: destinatario.ubigeo,
           partida_direccion: origen.direccion,
@@ -208,6 +205,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           gr_transportista
         }
     });
+    console.log(envio_guias);
     envio_guias.forEach( async (envio) => {
       const { factura, gr_remitente, gr_transportista } = envio;
       console.log('Registrando Guia de Remision Remitente...', gr_remitente );
@@ -228,17 +226,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       const respBilling = await registerBilling( factura );
       if ( !respBilling.result ) {
           console.log( respBilling.message );
-          return;
       }        
     });
-    //let carrier = new Carrier('TG01', remitentes);
-    // Here You can do final Validation and then Submit Your form
-    // if (!formData.agreeToTerms) {
-    //   alert('Error!!!!!!   You must agree to Terms of Services!!!!');
-    // } else {
- 
-      //setStep('Final');
-    //}
   };
   const handlePreviewFormData = () => {
       const { ubigeo_origen, placa_vehiculo, dni_conductor, detalle_envio } = formData;
@@ -276,10 +265,6 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     }));
     alert('Detalle eliminado exitosamente');
   };
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   return (
     <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>

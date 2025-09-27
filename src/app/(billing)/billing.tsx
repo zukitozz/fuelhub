@@ -3,8 +3,7 @@
 import { registerBilling } from "@/actions";
 import { SelectFromHideOnSelect } from "@/components";
 import { useRouter } from 'next/navigation';
-import { IBilling, ICarrier, ICarrierItem, IConductor, IDestinatario, IItem, IOrigen, IReceptor, IRemitente, IVehiculo } from "@/interfaces";
-import { Billing } from "@/model";
+import { IBilling, ICarrier, ICarrierItem, IConductor, IDestinatario, IOrigen, IReceptor, IRemitente, IVehiculo } from "@/interfaces";
 import clsx from "clsx";
 import { useState } from "react";
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,13 +30,10 @@ type FormInputs = {
 
 export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, conductores }: Props) => {
     const [errorMessage, setErrorMessage] = useState('')
-    const [origenHidden, setOrigenHidden] = useState(false)
-    const [conductorHidden, setConductorHidden] = useState(false)
     const [isPlacingBilling, setIsPlacingBilling] = useState(false)
-    const { register, handleSubmit, formState: {errors} } = useForm<FormInputs>();
+    const { register, handleSubmit } = useForm<FormInputs>();
     const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async(data) => {
-        // listBilling();
         setIsPlacingBilling(true);
         setErrorMessage('');
         const { dni_conductor, gal_diesel, gal_premium, gal_regular, placa_vehiculo, ruc_destinatario, ruc_remitente, ubigeo_origen } = data;
@@ -142,10 +138,7 @@ export const BillingForm = ({ origenes, vehiculos, remitentes, destinatarios, co
             setErrorMessage( respBilling.message );
             return;
         }
-        //limpiar los valores del formulario
         router.push('/historic'); // Redirigir a la página de inicio
-
-        // window.location.replace('/');
     }
 
     const fieldOrigen = register("ubigeo_origen", { required: true });

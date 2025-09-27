@@ -1,8 +1,5 @@
 import { IBillingForm, IBillingFormDetail, IDestinatario, IRemitente } from "@/interfaces";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
-import {
-  MdDelete
-} from 'react-icons/md';
+import { useState } from "react";
 
 interface StepBProps {
   formData: IBillingForm;
@@ -43,7 +40,6 @@ const StepB: React.FC<StepBProps> = ({
       [name]: value
     }));
   }
-  //TODO: Eliminar detalle
   return (
     <div>
       <h1 className='my-2 text-xl font-bold text-blue-900'>
@@ -144,7 +140,10 @@ const StepB: React.FC<StepBProps> = ({
           /> 
         <button
           className='bg-purple-400 px-4 py-2 rounded-xl w-full'
-          onClick={() => handleAddDetail({...formDetailData})}
+          onClick={() => {
+            handleAddDetail({...formDetailData})
+            console.log("limpiando data del detalle");
+          }}
         >
           AGREGAR
         </button>          
