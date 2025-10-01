@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { registerBilling } from "@/actions";
 import StepA from './StepA';
 import StepB from './StepB';
@@ -39,6 +40,7 @@ interface SimpleMultiStepFormProps {
   initialData: SeedData;
 };
 const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }) => {
+  const router = useRouter();
   const [step, setStep] = useState('A');
   const [formData, setFormData] = useState(initialFormData);
   const [completeFormData, setCompleteFormData] = useState(initialCompleteFormData);
@@ -156,13 +158,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           peso_bruto,
           ruc: Constants.RUC_EMPRESA
         };
-        const cantidad = +gal_diesel + +gal_premium + +gal_regular;
-        const precio_unitario = +gal_precio;
-        const valor_unitario = +(precio_unitario / 1.18).toFixed(2);
-        const igv_unitario = +(precio_unitario - valor_unitario).toFixed(2);
-        const precio = +(cantidad * precio_unitario).toFixed(2);
+        const cantidad = ((+gal_diesel + +gal_premium + +gal_regular)*1000)/1000;
+        const precio_unitario = +((+gal_precio).toFixed(2));
+        const valor_unitario = +((precio_unitario / 1.18).toFixed(10));
+        const igv_unitario = +((precio_unitario - valor_unitario).toFixed(10));
+        const precio = +((cantidad * precio_unitario).toFixed(2));
         const valor = +(cantidad * valor_unitario).toFixed(2);
-        const igv = +(cantidad * igv_unitario).toFixed(2);
+        const igv = +((cantidad * igv_unitario).toFixed(2));
         const factura : IBilling = {
             serie: Constants.SERIE_FACTURA,
             receptor : destinatario as IReceptor,
@@ -226,7 +228,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       const respBilling = await registerBilling( factura );
       if ( !respBilling.result ) {
           console.log( respBilling.message );
-      }        
+      }     
+      router.push('/historic');   
     });
   };
   const handlePreviewFormData = () => {
