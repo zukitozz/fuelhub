@@ -7,19 +7,38 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoCardOutline } from "react-icons/io5";
 import { Constants } from '@/constants/Constants';
-
-const fetcher = (url: string) => listBilling(url)
+import Datetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
+import { useState } from 'react';
+import moment, { Moment } from 'moment';
 
 export default function HistoricPage() {
+    const fetcher = (url: string) => listBilling(url, fechaEmision);
     const { data, error } = useSWR(`${Constants.API_URL}/billing`, fetcher);
+    const [ fechaEmision, setFechaEmision] = useState<Date | null>(new Date());
     if (error) {
         redirect("/");
     }
     const historic = data?.historic || [];
     return (
         <>
-        <Title title="Historico" />
-
+        <div className="mb-10">
+            <Datetime
+                className="appearance-none"
+                value={fechaEmision??new Date()}
+                dateFormat="YYYY-MM-DD"
+                timeFormat={false}
+                onChange={(value: string | Moment) => {
+                    if (typeof value === 'string') {
+                        setFechaEmision(moment(value, "YYYY-MM-DD").toDate());
+                    } else if (moment.isMoment(value)) {
+                        setFechaEmision(value.toDate());
+                    } else {
+                        setFechaEmision(null);
+                    }
+                }}
+            />
+        </div>
         <div className="mb-10">
             <table className="min-w-full">
             <thead className="bg-gray-200 border-b">

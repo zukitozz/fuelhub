@@ -26,7 +26,7 @@ export const registerBilling = async( billing: IBilling|ICarrier ) => {
   }
 }
 
-export const listBilling = async(url: string) => {
+export const listBilling = async(url: string, fecha_emision: Date | null) => {
   try {
     //const user = await posApi.get('https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing', { withCredentials: false });
     // const user = await axios({
@@ -42,13 +42,18 @@ export const listBilling = async(url: string) => {
     //   withCredentials: false
     // })
 
+    const formattedDate = fecha_emision?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+
     const historic = await axios.get(url, {
       headers: {
-      "Cache-Control": "no-cache",
-      "Content-Type": "application/x-www-form-urlencoded",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json"
       },
       params: {
-        fecha_emision: '2025-09-26'
+        fecha_emision: formattedDate,
+        limit: 10
       }
     });
     console.log(historic);
