@@ -71,7 +71,7 @@ const StepB: React.FC<StepBProps> = ({
             ))}
         </select>       
       </div>   
-      <div className='inline-flex items-center space-x-12 my-2'>
+      <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
         <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL DBDIESEL</label>
         <input 
           type="number" 
@@ -90,7 +90,7 @@ const StepB: React.FC<StepBProps> = ({
           onChange={(e) => handleChangeInput(e)}
         />        
       </div>
-      <div className='inline-flex items-center space-x-12 my-2'>
+      <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
         <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL PREMIUM</label>
         <input 
           type="number" 
@@ -109,7 +109,7 @@ const StepB: React.FC<StepBProps> = ({
           onChange={(e) => handleChangeInput(e)}
         />            
       </div>
-      <div className='inline-flex items-center space-x-12 my-2'>   
+      <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
         <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">REGULAR</label>
         <input 
           type="number" 
@@ -128,7 +128,7 @@ const StepB: React.FC<StepBProps> = ({
           onChange={(e) => handleChangeInput(e)}
         />                          
       </div>
-      <div className='inline-flex items-center space-x-12 my-2 justify-between w-full'>
+      <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
         <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PRECIO</label>
         <input 
           type="number" 
