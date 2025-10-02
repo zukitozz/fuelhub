@@ -25,5 +25,6 @@ export interface ICarrier {
     peso_bruto: number;
     ruc: string;
     enviado?: boolean; 
+    etapa: string; 
     items?: ICarrierItem[]; 
 }

@@ -43,6 +43,7 @@ export interface IBilling {
     fecha_facturado_nota_despacho?: string;
     ruc: string;
     enviado?: boolean; 
+    etapa: string; 
     items?: IItem[];  
 }
 
