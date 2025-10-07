@@ -14,5 +14,6 @@ export * from './receptor.interface';
 export * from './remitente.interface';
 export * from './serie.interface';
 export * from './ruta.interface';
+export * from './updateBilling.interface';
 export * from './usuario.interface';
 export * from './vehiculo.interface';

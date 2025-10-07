@@ -9,6 +9,7 @@ import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
 import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
+import { BillingLoading } from '@/components';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -45,6 +46,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   const [formData, setFormData] = useState(initialFormData);
   const [completeFormData, setCompleteFormData] = useState(initialCompleteFormData);
   const { origenes, conductores, vehiculos, remitentes, destinatarios } = initialData;
+  const [isLoading, setIsLoadgin] = useState(false);
 
   const handleNextStep = () => {
     if (step === 'A') {
@@ -89,7 +91,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         alert('Error!!!!!!   You must fill all detail fields!!!!');
     }
   };
-  const handleSubmitFormData = () => {
+  const handleSubmitFormData = async () => {
+    setIsLoadgin(true);
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
         const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
@@ -236,6 +239,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       }     
       router.push('/historic');   
     });
+
   };
   const handlePreviewFormData = () => {
       const { ubigeo_origen, placa_vehiculo, dni_conductor, detalle_envio } = formData;
@@ -275,38 +279,45 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   };
 
   return (
-    <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>
-      {/* // Render Steps */}
-      {step === 'A' ? (
-        <StepA
-            origenes={origenes}
-            conductores={conductores}
-            vehiculos={vehiculos}
-            formData={formData}
-            handleChangeInput={handleChangeInput}
-            handleNextStep={handleNextStep}
-        />
-      ) : null}
-      {step === 'B' ? (
-        <StepB
-          remitentes={remitentes}
-          destinatarios={destinatarios}
-          formData={formData}
-          handleAddDetail={handleAddDetail}
-          handlePrevStep={handlePrevStep}
-          handlePreviewFormData={handlePreviewFormData}
-        />
-      ) : null}
-      {step === 'C' ? (
-        <StepC
-          completeFormData={completeFormData}
-          handlePrevStep={handlePrevStep}
-          handleSubmitFormData={handleSubmitFormData}
-          handleDeleteDetail={handleDeleteDetail}
-        />
-      ) : null}
-      {step === 'Final' ? <StepFinal /> : null}
-    </div>
+    <>
+      {
+        isLoading 
+        ?<BillingLoading />
+        :
+        <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>
+          {step === 'A' ? (
+            <StepA
+                origenes={origenes}
+                conductores={conductores}
+                vehiculos={vehiculos}
+                formData={formData}
+                handleChangeInput={handleChangeInput}
+                handleNextStep={handleNextStep}
+            />
+          ) : null}
+          {step === 'B' ? (
+            <StepB
+              remitentes={remitentes}
+              destinatarios={destinatarios}
+              formData={formData}
+              handleAddDetail={handleAddDetail}
+              handlePrevStep={handlePrevStep}
+              handlePreviewFormData={handlePreviewFormData}
+            />
+          ) : null}
+          {step === 'C' ? (
+            <StepC
+              completeFormData={completeFormData}
+              handlePrevStep={handlePrevStep}
+              handleSubmitFormData={handleSubmitFormData}
+              handleDeleteDetail={handleDeleteDetail}
+              disabled={isLoading}
+            />
+          ) : null}
+          {step === 'Final' ? <StepFinal /> : null}
+        </div>
+      }
+    </>
   );
 };
 
