@@ -1,5 +1,6 @@
 export interface ApproveGuiaRequest {
   id: string;
+  transaccion: string[];
   igv: number;
   igv_unitario: number;
   precio: number;

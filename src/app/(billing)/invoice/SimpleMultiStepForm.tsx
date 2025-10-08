@@ -10,6 +10,7 @@ import { SeedData } from '@/seed/seed';
 import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
 import { BillingLoading } from '@/components';
+import { createUUID } from '@/util';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -80,7 +81,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     });
   };
   const handleAddDetail = (detail: IBillingFormDetail) => {
-    const { ruc_remitente, ruc_destinatario, gal_diesel, gal_regular, gal_premium, gal_precio } = detail;
+    const { ruc_remitente, ruc_destinatario, gal_diesel, gal_regular, gal_premium } = detail;
     if (ruc_remitente && ruc_destinatario && (gal_diesel > 0 || gal_regular > 0 || gal_premium > 0)) {
       setFormData((prevData) => ({
         ...prevData,
@@ -146,6 +147,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         const peso_bruto = Constants.PESO_BRUTO_DEFAULT + +peso_combustible;    
         const precio_referencial = initialData.rutas.find((ruta) => (ruta.ubigeo_origen === origen.ubigeo && ruta.ubigeo_destino === destinatario.ubigeo))?.precio_galon || 0;
         const precio_galon = +(gal_precio && gal_precio > 0 ? gal_precio : precio_referencial);
+        const transaccion = createUUID();
         const gr_transportista: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
           fecha_traslado: new Date().toLocaleString('sv-SE', {timeZone: 'America/Lima' }),
@@ -162,7 +164,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
           ruc: Constants.RUC_EMPRESA,
-          etapa: Constants.ETAPA_FACTURACION.CREADO
+          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          transaccion
         };
         const cantidad = ((+gal_diesel + +gal_premium + +gal_regular)*1000)/1000;
         const precio_unitario = +((+precio_galon).toFixed(2));
@@ -171,6 +174,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         const precio = +((cantidad * precio_unitario).toFixed(2));
         const valor = +(cantidad * valor_unitario).toFixed(2);
         const igv = +((cantidad * igv_unitario).toFixed(2));
+        const descripcion = `SERVICIO TRANSPORTE COMBUSTIBLE - `;
         const factura : IBilling = {
             serie: Constants.SERIE_FACTURA,
             receptor : destinatario as IReceptor,
@@ -184,12 +188,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             pago_efectivo: precio,
             ruc: Constants.RUC_EMPRESA,
             items: [
-                { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion: 'Item 1', medida: 'NIU', codigo: 'COD' },
+                { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion, medida: 'GLL', codigo: 'COD' },
             ],
             tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
             numeracion_documento_afectado: 'EG01-1',
             motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA',
-            etapa: Constants.ETAPA_FACTURACION.CREADO     
+            etapa: Constants.ETAPA_FACTURACION.CREADO,
+            transaccion
         }
         const gr_remitente: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_REMITENTE,
@@ -207,7 +212,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
           ruc: remitente.numero_documento,
-          etapa: Constants.ETAPA_FACTURACION.CREADO
+          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          transaccion
         }
         return {
           factura,

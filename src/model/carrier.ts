@@ -20,8 +20,10 @@ export class Carrier implements ICarrier{
     peso_bruto: number;
     ruc: string;
     enviado?: boolean;
+    etapa: string;
+    transaccion: string;    
     items?: ICarrierItem[];
-    constructor(serie: string, remitente: IRemitente, destinatario: IDestinatario, conductor: IConductor, vehiculo: IVehiculo, usuario: string, tipo_comprobante: string, numeracion: string, llegada_direccion: string, llegada_ubigeo: string, partida_direccion: string, partida_ubigeo: string, peso_bruto: number, ruc: string, items: ICarrierItem[]) {
+    constructor(serie: string, remitente: IRemitente, destinatario: IDestinatario, conductor: IConductor, vehiculo: IVehiculo, usuario: string, tipo_comprobante: string, numeracion: string, llegada_direccion: string, llegada_ubigeo: string, partida_direccion: string, partida_ubigeo: string, peso_bruto: number, ruc: string, etapa: string, transaccion: string, items: ICarrierItem[]) {
         this.remitente = remitente;
         this.destinatario = destinatario;
         this.conductor = conductor;
@@ -36,6 +38,8 @@ export class Carrier implements ICarrier{
         this.partida_ubigeo = partida_ubigeo;
         this.peso_bruto = peso_bruto;
         this.ruc = ruc;
+        this.etapa = etapa;
+        this.transaccion = transaccion;
         this.items = items || [];
     }
 }
