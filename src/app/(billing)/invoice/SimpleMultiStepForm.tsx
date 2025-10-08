@@ -9,6 +9,8 @@ import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
 import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
+import { BillingLoading } from '@/components';
+import { createUUID } from '@/util';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -45,6 +47,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   const [formData, setFormData] = useState(initialFormData);
   const [completeFormData, setCompleteFormData] = useState(initialCompleteFormData);
   const { origenes, conductores, vehiculos, remitentes, destinatarios } = initialData;
+  const [isLoading, setIsLoadgin] = useState(false);
 
   const handleNextStep = () => {
     if (step === 'A') {
@@ -78,8 +81,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     });
   };
   const handleAddDetail = (detail: IBillingFormDetail) => {
-    const { ruc_remitente, ruc_destinatario, gal_diesel, gal_regular, gal_premium, gal_precio } = detail;
-    if (ruc_remitente && ruc_destinatario && (gal_diesel > 0 || gal_regular > 0 || gal_premium > 0) && gal_precio > 0) {
+    const { ruc_remitente, ruc_destinatario, gal_diesel, gal_regular, gal_premium } = detail;
+    if (ruc_remitente && ruc_destinatario && (gal_diesel > 0 || gal_regular > 0 || gal_premium > 0)) {
       setFormData((prevData) => ({
         ...prevData,
         detalle_envio: [...prevData.detalle_envio, detail],
@@ -89,7 +92,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         alert('Error!!!!!!   You must fill all detail fields!!!!');
     }
   };
-  const handleSubmitFormData = () => {
+  const handleSubmitFormData = async () => {
+    setIsLoadgin(true);
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
         const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
@@ -141,6 +145,9 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         }
         const peso_combustible = +gal_diesel * Constants.PESO_GALON_DIESEL + (+gal_premium + +gal_regular) * Constants.PESO_GALON_GASOHOL;
         const peso_bruto = Constants.PESO_BRUTO_DEFAULT + +peso_combustible;    
+        const precio_referencial = initialData.rutas.find((ruta) => (ruta.ubigeo_origen === origen.ubigeo && ruta.ubigeo_destino === destinatario.ubigeo))?.precio_galon || 0;
+        const precio_galon = +(gal_precio && gal_precio > 0 ? gal_precio : precio_referencial);
+        const transaccion = createUUID();
         const gr_transportista: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
           fecha_traslado: new Date().toLocaleString('sv-SE', {timeZone: 'America/Lima' }),
@@ -156,15 +163,18 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
-          ruc: Constants.RUC_EMPRESA
+          ruc: Constants.RUC_EMPRESA,
+          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          transaccion
         };
         const cantidad = ((+gal_diesel + +gal_premium + +gal_regular)*1000)/1000;
-        const precio_unitario = +((+gal_precio).toFixed(2));
+        const precio_unitario = +((+precio_galon).toFixed(2));
         const valor_unitario = +((precio_unitario / 1.18).toFixed(10));
         const igv_unitario = +((precio_unitario - valor_unitario).toFixed(10));
         const precio = +((cantidad * precio_unitario).toFixed(2));
         const valor = +(cantidad * valor_unitario).toFixed(2);
         const igv = +((cantidad * igv_unitario).toFixed(2));
+        const descripcion = `SERVICIO TRANSPORTE COMBUSTIBLE - `;
         const factura : IBilling = {
             serie: Constants.SERIE_FACTURA,
             receptor : destinatario as IReceptor,
@@ -178,11 +188,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             pago_efectivo: precio,
             ruc: Constants.RUC_EMPRESA,
             items: [
-                { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion: 'Item 1', medida: 'NIU', codigo: 'COD' },
+                { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion, medida: 'GLL', codigo: 'COD' },
             ],
             tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
             numeracion_documento_afectado: 'EG01-1',
-            motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA'                 
+            motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA',
+            etapa: Constants.ETAPA_FACTURACION.CREADO,
+            transaccion
         }
         const gr_remitente: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_REMITENTE,
@@ -199,7 +211,9 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
-          ruc: remitente.numero_documento
+          ruc: remitente.numero_documento,
+          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          transaccion
         }
         return {
           factura,
@@ -231,6 +245,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       }     
       router.push('/historic');   
     });
+
   };
   const handlePreviewFormData = () => {
       const { ubigeo_origen, placa_vehiculo, dni_conductor, detalle_envio } = formData;
@@ -270,38 +285,45 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   };
 
   return (
-    <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>
-      {/* // Render Steps */}
-      {step === 'A' ? (
-        <StepA
-            origenes={origenes}
-            conductores={conductores}
-            vehiculos={vehiculos}
-            formData={formData}
-            handleChangeInput={handleChangeInput}
-            handleNextStep={handleNextStep}
-        />
-      ) : null}
-      {step === 'B' ? (
-        <StepB
-          remitentes={remitentes}
-          destinatarios={destinatarios}
-          formData={formData}
-          handleAddDetail={handleAddDetail}
-          handlePrevStep={handlePrevStep}
-          handlePreviewFormData={handlePreviewFormData}
-        />
-      ) : null}
-      {step === 'C' ? (
-        <StepC
-          completeFormData={completeFormData}
-          handlePrevStep={handlePrevStep}
-          handleSubmitFormData={handleSubmitFormData}
-          handleDeleteDetail={handleDeleteDetail}
-        />
-      ) : null}
-      {step === 'Final' ? <StepFinal /> : null}
-    </div>
+    <>
+      {
+        isLoading 
+        ?<BillingLoading />
+        :
+        <div className='w-[900px] max-w-full px-12 py-1 mx-auto rounded-lg'>
+          {step === 'A' ? (
+            <StepA
+                origenes={origenes}
+                conductores={conductores}
+                vehiculos={vehiculos}
+                formData={formData}
+                handleChangeInput={handleChangeInput}
+                handleNextStep={handleNextStep}
+            />
+          ) : null}
+          {step === 'B' ? (
+            <StepB
+              remitentes={remitentes}
+              destinatarios={destinatarios}
+              formData={formData}
+              handleAddDetail={handleAddDetail}
+              handlePrevStep={handlePrevStep}
+              handlePreviewFormData={handlePreviewFormData}
+            />
+          ) : null}
+          {step === 'C' ? (
+            <StepC
+              completeFormData={completeFormData}
+              handlePrevStep={handlePrevStep}
+              handleSubmitFormData={handleSubmitFormData}
+              handleDeleteDetail={handleDeleteDetail}
+              disabled={isLoading}
+            />
+          ) : null}
+          {step === 'Final' ? <StepFinal /> : null}
+        </div>
+      }
+    </>
   );
 };
 

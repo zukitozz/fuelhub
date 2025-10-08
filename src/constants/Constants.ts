@@ -18,4 +18,9 @@ export const Constants = {
     PESO_BRUTO_DEFAULT: 6155,
     PESO_GALON_DIESEL: 3.2,
     PESO_GALON_GASOHOL: 2.8,
+    ETAPA_FACTURACION: {
+        CREADO: 'CREATED',
+        POR_ENVIAR: 'DISPATCH',
+        ENVIADO: 'SENT',
+    }
 }

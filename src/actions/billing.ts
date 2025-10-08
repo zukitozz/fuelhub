@@ -1,5 +1,5 @@
 import { Constants } from "@/constants";
-import { IBilling, ICarrier } from "@/interfaces";
+import { ApproveGuiaRequest, IBilling, ICarrier } from "@/interfaces";
 import axios from "axios";
 
 export const registerBilling = async( billing: IBilling|ICarrier ) => {
@@ -65,6 +65,29 @@ export const listBilling = async(url: string, fecha_emision: Date | null) => {
     return {
       result: false,
       message: 'No se pudo obtener la lista de comprobantes',
+    }
+  }
+}
+
+export const aproveBilling = async(billing: ApproveGuiaRequest) => {
+  try {
+    const response = await axios.put(`${Constants.API_URL}/billing`, {
+      ...billing
+    }, { headers: { 'content-type': 'application/json' } });
+
+    return {
+      result: true,
+      message: 'Comprobante actualizado',
+      comprobante: response.data.comprobante
+    }
+
+  } catch (error) {
+    console.log(error);
+
+    return {
+      result: false,
+      message: 'No se pudo actualizar el comprobante',
+      comprobante: {}
     }
   }
 }

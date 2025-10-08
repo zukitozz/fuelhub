@@ -1,7 +1,6 @@
 'use client';
 import useSWR from 'swr';
 import { listBilling } from "@/actions";
-import { Title } from "@/components";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -91,17 +90,28 @@ export default function HistoricPage() {
                     {item.destinatario?.razon_social??item.receptor.razon_social}
                     </td>                                   
                     <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    {item.respuesta_mifact["errors"] === '' ? (
-                        <>
-                        <IoCardOutline className="text-green-800" />
-                        <span className="mx-2 text-green-800">Aceptado</span>
-                        </>
-                    ) : (
-                        <>
-                        <IoCardOutline className="text-red-800" />
-                        <span className="mx-2 text-red-800">Rechazado</span>
-                        </>
-                    )}
+                    {
+                        (item.respuesta_mifact && item.respuesta_mifact["errors"])
+                        ?(
+                            item.respuesta_mifact["errors"] === '' ? (
+                                <>
+                                <IoCardOutline className="text-green-800" />
+                                <span className="mx-2 text-green-800">Aceptado</span>
+                                </>
+                            ) : (
+                                <>
+                                <IoCardOutline className="text-red-800" />
+                                <span className="mx-2 text-red-800">Rechazado</span>
+                                </>
+                            )                           
+                        ):(
+                            <>
+                            <IoCardOutline className="text-yellow-800" />
+                            <span className="mx-2 text-yellow-800">Creado</span>
+                            </>   
+                        )
+                    }
+
                     </td>
                     <td className="text-sm text-gray-900 font-light px-6 ">
                     <Link href={`/orders/${ item.serie }`} className="hover:underline">

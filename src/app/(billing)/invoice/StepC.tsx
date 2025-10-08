@@ -6,13 +6,15 @@ interface StepCProps {
   handlePrevStep: () => void;
   handleSubmitFormData: () => void;
   handleDeleteDetail: (detail: IBillingCompleteFormDetail) => void;
+  disabled: boolean;
 }
 
 const StepC: React.FC<StepCProps> = ({
   completeFormData,
   handlePrevStep,
   handleSubmitFormData,
-  handleDeleteDetail
+  handleDeleteDetail,
+  disabled
 }) => {
   return (
     <div>
@@ -74,6 +76,7 @@ const StepC: React.FC<StepCProps> = ({
         </button>
         <button
           className='bg-blue-400 px-4 py-2 rounded-xl'
+          disabled={disabled}
           onClick={handleSubmitFormData}
         >
           Confirmar

@@ -21,9 +21,11 @@ export interface ICarrier {
     llegada_direccion: string;
     llegada_ubigeo: string;
     partida_direccion: string;
-    partida_ubigeo: string;    
+    partida_ubigeo: string;
     peso_bruto: number;
     ruc: string;
     enviado?: boolean; 
+    etapa: string; 
+    transaccion: string;
     items?: ICarrierItem[]; 
 }

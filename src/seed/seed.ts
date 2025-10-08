@@ -1,10 +1,11 @@
-import { IConductor, IDestinatario, IOrigen, IRemitente, IVehiculo } from "@/interfaces";
+import { IConductor, IDestinatario, IOrigen, IRemitente, IRuta, IVehiculo } from "@/interfaces";
 export interface SeedData {
     vehiculos: IVehiculo[],
     remitentes: IRemitente[],
     destinatarios: IDestinatario[],
     conductores: IConductor[],
     origenes: IOrigen[],
+    rutas: IRuta[]
 }
 
 
@@ -170,5 +171,19 @@ export const initialData: SeedData = {
         {
            id: "4", ubigeo: '240106', nombre: 'PAMPILLA', direccion: 'Carretera a Ventanilla, Km. 25, Callao 6. 7051 Prov. Const. Del Callao. Peru'
         }            
+    ],
+    rutas: [
+        { ubigeo_origen: '150107', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '150107', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '150107', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '150107', ubigeo_destino: '240106', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '070101', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '070101', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '070101', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '070101', ubigeo_destino: '240106', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '240106', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '240106', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '240106', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '240106', ubigeo_destino: '150107', precio_galon: 0.1166666666666667 }
     ]
 }
