@@ -174,16 +174,16 @@ export const initialData: SeedData = {
     ],
     rutas: [
         { ubigeo_origen: '150107', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '150107', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '150107', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '150107', ubigeo_destino: '140513', precio_galon: 0.275 },
+        { ubigeo_origen: '150107', ubigeo_destino: '140805', precio_galon: 0.15 },
         { ubigeo_origen: '150107', ubigeo_destino: '240106', precio_galon: 0.1166666666666667 },
         { ubigeo_origen: '070101', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '070101', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '070101', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '070101', ubigeo_destino: '140513', precio_galon: 0.275 },
+        { ubigeo_origen: '070101', ubigeo_destino: '140805', precio_galon: 0.15 },
         { ubigeo_origen: '070101', ubigeo_destino: '240106', precio_galon: 0.1166666666666667 },
         { ubigeo_origen: '240106', ubigeo_destino: '140408', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '240106', ubigeo_destino: '140513', precio_galon: 0.1166666666666667 },
-        { ubigeo_origen: '240106', ubigeo_destino: '140805', precio_galon: 0.1166666666666667 },
+        { ubigeo_origen: '240106', ubigeo_destino: '140513', precio_galon: 0.275 },
+        { ubigeo_origen: '240106', ubigeo_destino: '140805', precio_galon: 0.15 },
         { ubigeo_origen: '240106', ubigeo_destino: '150107', precio_galon: 0.1166666666666667 }
     ]
 }

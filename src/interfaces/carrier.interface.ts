@@ -27,5 +27,5 @@ export interface ICarrier {
     enviado?: boolean; 
     etapa: string; 
     transaccion: string;
-    items?: ICarrierItem[]; 
+    detalle?: ICarrierItem[]; 
 }

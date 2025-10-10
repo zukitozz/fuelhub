@@ -47,7 +47,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   const [formData, setFormData] = useState(initialFormData);
   const [completeFormData, setCompleteFormData] = useState(initialCompleteFormData);
   const { origenes, conductores, vehiculos, remitentes, destinatarios } = initialData;
-  const [isLoading, setIsLoadgin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleNextStep = () => {
     if (step === 'A') {
@@ -87,13 +87,12 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         ...prevData,
         detalle_envio: [...prevData.detalle_envio, detail],
       }));
-      alert('Detalle agregado exitosamente');
     }else{
         alert('Error!!!!!!   You must fill all detail fields!!!!');
     }
   };
   const handleSubmitFormData = async () => {
-    setIsLoadgin(true);
+    setIsLoading(true);
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
         const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
@@ -157,7 +156,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           vehiculo,
           usuario: Constants.USUARIO_DEFAULT,
           tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
-          items,
+          detalle: items,
           llegada_direccion: destinatario.direccion,
           llegada_ubigeo: destinatario.ubigeo,
           partida_direccion: origen.direccion,
@@ -187,7 +186,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             pago_tarjeta: 0,
             pago_efectivo: precio,
             ruc: Constants.RUC_EMPRESA,
-            items: [
+            detalle: [
                 { cantidad, valor_unitario, precio_unitario, igv_unitario, valor, precio, igv, descripcion, medida: 'GLL', codigo: 'COD' },
             ],
             tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
@@ -205,7 +204,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           vehiculo,
           usuario: Constants.USUARIO_DEFAULT,
           tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_REMITENTE,
-          items,
+          detalle: items,
           llegada_direccion: destinatario.direccion,
           llegada_ubigeo: destinatario.ubigeo,
           partida_direccion: origen.direccion,
@@ -221,7 +220,6 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           gr_transportista
         }
     });
-    console.log(envio_guias);
     envio_guias.forEach( async (envio) => {
       const { factura, gr_remitente, gr_transportista } = envio;
       console.log('Registrando Guia de Remision Remitente...', gr_remitente );
@@ -242,8 +240,10 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       const respBilling = await registerBilling( factura );
       if ( !respBilling.result ) {
           console.log( respBilling.message );
-      }     
-      router.push('/historic');   
+      }
+      setIsLoading(false);
+      alert('Pedidos registrados correctamente');
+      window.location.reload();
     });
 
   };

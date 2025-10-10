@@ -119,13 +119,13 @@ export default function AproovePage() {
                         {item.fecha_actual}
                         </td>
                         <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        {item.items[0]?.descripcion} - {item.receptor?.razon_social}
+                        {item.detalle[0]?.descripcion} - {item.receptor?.razon_social}
                         </td>
                         <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         <input 
                         type="number"
                         name="precio_unitario" 
-                        defaultValue={ item.items[0]?.precio_unitario }
+                        defaultValue={ item.detalle[0]?.precio_unitario }
                         disabled={ item.etapa !== 'CREATED' }
                         onChange={(e) => setPrecioState(e.target.value)}
                         className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
@@ -133,9 +133,9 @@ export default function AproovePage() {
                         </td>
                         <td className="text-sm text-gray-900 font-light px-6 ">
                             <button
-                            className='bg-blue-400 px-4 py-2 rounded-xl'
+                            className={`${isLoading || item.etapa !== 'CREATED' ? 'bg-gray-400' : 'bg-blue-400'} px-4 py-2 rounded-xl`}
                             disabled={isLoading || item.etapa !== 'CREATED' }
-                            onClick={() => handleSubmitFormData(item.id, +precioState, item.items[0]?.cantidad, historic.filter((it:any) => it.transaccion === item.transaccion).map((it:any) => it.id).join(",")) }
+                            onClick={() => handleSubmitFormData(item.id, (+precioState)===0?item.detalle[0]?.precio_unitario:+precioState, item.detalle[0]?.cantidad, historic.filter((it:any) => it.transaccion === item.transaccion).map((it:any) => it.id).join(",")) }
                             >
                             Actualizar
                             </button>
