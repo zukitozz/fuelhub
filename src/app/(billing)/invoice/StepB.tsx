@@ -128,8 +128,8 @@ const StepB: React.FC<StepBProps> = ({
           onChange={(e) => handleChangeInput(e)}
         />                          
       </div>
-      <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
-        <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PRECIO</label>
+      <div className='items-center lg:space-x-12 my-2 w-full'>
+        {/* <label htmlFor="gal_precio" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">PRECIO</label>
         <input 
           type="number" 
           step="0.1" 
@@ -137,7 +137,7 @@ const StepB: React.FC<StepBProps> = ({
           defaultValue={ '0' }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
-          /> 
+          />  */}
         <button
           className='bg-purple-400 px-4 py-2 rounded-xl w-full'
           onClick={() => {

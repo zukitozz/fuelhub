@@ -32,7 +32,6 @@ const StepC: React.FC<StepCProps> = ({
               <tr>
                 <th scope="col" className="px-4 py-3">Remitente</th>
                 <th scope="col" className="px-4 py-3">Destinatario</th>
-                <th scope="col" className="px-1 py-3">Precio</th>
                 <th scope="col" className="px-1 py-3">Diesel</th>
                 <th scope="col" className="px-1 py-3">Scop</th>
                 <th scope="col" className="px-1 py-3">Premium</th>
@@ -47,7 +46,6 @@ const StepC: React.FC<StepCProps> = ({
                 <tr key={ detail.remitente.razon_social || detail.destinatario.razon_social }>
                   <td className='text-center'>{ detail.remitente.razon_social }</td>
                   <td className='text-center'>{ detail.destinatario.razon_social }</td>
-                  <td className='text-right'>S/ { detail.gal_precio }</td>
                   <td className='text-right'>{ detail.gal_diesel }</td>
                   <td className='text-right'>{ detail.scop_diesel }</td>
                   <td className='text-right'>{ detail.gal_premium }</td>

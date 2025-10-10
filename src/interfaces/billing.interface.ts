@@ -45,7 +45,7 @@ export interface IBilling {
     enviado?: boolean; 
     etapa: string; 
     transaccion: string;
-    items?: IItem[];  
+    detalle?: IItem[];  
 }
 
 export interface IBillingForm {

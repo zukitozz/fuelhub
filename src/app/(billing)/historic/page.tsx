@@ -15,6 +15,23 @@ export default function HistoricPage() {
     const fetcher = (url: string) => listBilling(url, fechaEmision);
     const { data, error } = useSWR(`${Constants.API_URL}/billing`, fetcher);
     const [ fechaEmision, setFechaEmision] = useState<Date | null>(new Date());
+    const downloadPdfFromBase64 = (base64String: string, filename: string) => {
+      // Ensure the Base64 string has the correct data URI prefix
+      const dataUri = base64String.startsWith("data:application/pdf;base64,")
+        ? base64String
+        : `data:application/pdf;base64,${base64String}`;
+
+      const link = document.createElement("a");
+      link.href = dataUri;
+      link.download = filename || "document.pdf"; // Default filename if not provided
+      document.body.appendChild(link); // Append to body (can be temporary)
+      link.click();
+      document.body.removeChild(link); // Clean up the temporary link
+    };
+    const handleDownload = (myBase64Pdf: string) => {
+    downloadPdfFromBase64(myBase64Pdf, "MyReport.pdf");
+    };    
+
     if (error) {
         redirect("/");
     }
@@ -70,7 +87,7 @@ export default function HistoricPage() {
                     scope="col"
                     className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                 >
-                    Acciones
+                    Respuesta
                 </th>
                 </tr>
             </thead>
@@ -91,32 +108,44 @@ export default function HistoricPage() {
                     </td>                                   
                     <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                     {
-                        (item.respuesta_mifact && item.respuesta_mifact["errors"])
+                        (item.respuesta_mifact)
                         ?(
-                            item.respuesta_mifact["errors"] === '' ? (
+                            (item.respuesta_mifact["errors"] === '')
+                            ?(
                                 <>
                                 <IoCardOutline className="text-green-800" />
                                 <span className="mx-2 text-green-800">Aceptado</span>
-                                </>
-                            ) : (
+                                </>                                
+                            )
+                            :(
                                 <>
                                 <IoCardOutline className="text-red-800" />
                                 <span className="mx-2 text-red-800">Rechazado</span>
-                                </>
-                            )                           
-                        ):(
-                            <>
-                            <IoCardOutline className="text-yellow-800" />
-                            <span className="mx-2 text-yellow-800">Creado</span>
-                            </>   
+                                </>                                
+                            )
                         )
+                        :(<span className="mx-2 text-yellow-800">{item.etapa === 'DISPATCH' ? 'Enviando SUNAT' : 'Creado'}</span>)
                     }
 
                     </td>
                     <td className="text-sm text-gray-900 font-light px-6 ">
-                    <Link href={`/orders/${ item.serie }`} className="hover:underline">
-                        Ver orden
-                    </Link>
+                        {
+                            (item.respuesta_mifact) 
+                            ? (
+                                (item.respuesta_mifact["errors"] === '')
+                                ?(
+                                    item.tipo_comprobante === '01'
+                                    ?<Link href={item.respuesta_mifact["url"]} className="hover:underline" target='_blank'>Ver PDF</Link>
+                                    :<button onClick={() => handleDownload(item.respuesta_mifact["pdf_bytes"])}>Descargar PDF</button>
+                                    
+                                )
+                                :(<span className="text-red-800">{item.respuesta_mifact["errors"]}</span>)
+                            )
+                            : (
+                                <span className="mx-2">---</span>
+                            )
+                        }
+
                     </td>
                 </tr>
                 ))}
