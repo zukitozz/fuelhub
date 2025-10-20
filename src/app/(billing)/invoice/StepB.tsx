@@ -40,6 +40,10 @@ const StepB: React.FC<StepBProps> = ({
       [name]: value
     }));
   }
+
+  const handleCleanForm = () => {
+    setFormDetailData(detailFormData);
+  }
   return (
     <div>
       <h1 className='my-2 text-xl font-bold text-blue-900'>
@@ -51,6 +55,7 @@ const StepB: React.FC<StepBProps> = ({
           name="ruc_remitente"
           onChange={handleChangeInput} 
           defaultValue={ '' }
+          value={ formDetailData.ruc_remitente }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option value={''}>Seleccione</option>
             {remitentes.map((field) => (
@@ -64,6 +69,7 @@ const StepB: React.FC<StepBProps> = ({
           name="ruc_destinatario"
           onChange={handleChangeInput} 
           defaultValue={ '' }
+          value={ formDetailData.ruc_destinatario }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option value={''}>Seleccione</option>
             {destinatarios.map((field) => (
@@ -78,6 +84,7 @@ const StepB: React.FC<StepBProps> = ({
           step="0.001" 
           name="gal_diesel" 
           defaultValue={ '' }
+          value={ formDetailData.gal_diesel }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />
@@ -86,6 +93,7 @@ const StepB: React.FC<StepBProps> = ({
           type="text" 
           name="scop_diesel" 
           defaultValue={ '' }
+          value={ formDetailData.scop_diesel }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />        
@@ -97,6 +105,7 @@ const StepB: React.FC<StepBProps> = ({
           step="0.001" 
           name="gal_premium" 
           defaultValue={ '' }
+          value={ formDetailData.gal_premium }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
           />
@@ -105,6 +114,7 @@ const StepB: React.FC<StepBProps> = ({
           type="text" 
           name="scop_premium" 
           defaultValue={ '' }
+          value={ formDetailData.scop_premium }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />            
@@ -116,6 +126,7 @@ const StepB: React.FC<StepBProps> = ({
           step="0.001" 
           name="gal_regular" 
           defaultValue={ '' }
+          value={ formDetailData.gal_regular }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
           />
@@ -124,6 +135,7 @@ const StepB: React.FC<StepBProps> = ({
           type="text" 
           name="scop_regular" 
           defaultValue={ '' }
+          value={ formDetailData.scop_regular }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />                          
@@ -143,6 +155,7 @@ const StepB: React.FC<StepBProps> = ({
           onClick={() => {
             handleAddDetail({...formDetailData})
             console.log("limpiando data del detalle");
+            handleCleanForm();
           }}
         >
           AGREGAR
