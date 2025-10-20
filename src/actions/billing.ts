@@ -1,5 +1,5 @@
 import { Constants } from "@/constants";
-import { ApproveGuiaRequest, IBilling, ICarrier } from "@/interfaces";
+import { ApproveGuiaRequest, IBilling, ICarrier, ILastEvaluatedKey, IPagination } from "@/interfaces";
 import axios from "axios";
 
 export const registerBilling = async( billing: IBilling|ICarrier ) => {
@@ -26,7 +26,9 @@ export const registerBilling = async( billing: IBilling|ICarrier ) => {
   }
 }
 
-export const listBilling = async(url: string, fecha_emision: Date | null) => {
+
+
+export const listBilling = async(url: string, fecha_emision: Date | null, pagination: IPagination | null) => {
   try {
     //const user = await posApi.get('https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing', { withCredentials: false });
     // const user = await axios({
@@ -43,7 +45,13 @@ export const listBilling = async(url: string, fecha_emision: Date | null) => {
     // })
 
     const formattedDate = fecha_emision?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
-
+    const params: any = {
+      fecha_emision: formattedDate,
+      limit: 10
+    }
+    if(pagination && pagination.lastValue){
+      params.start = JSON.stringify(pagination.lastValue);
+    }
 
     const historic = await axios.get(url, {
       headers: {
@@ -51,12 +59,8 @@ export const listBilling = async(url: string, fecha_emision: Date | null) => {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json"
       },
-      params: {
-        fecha_emision: formattedDate,
-        limit: 10
-      }
+      params
     });
-    console.log(historic);
     return {
       result: true,
       historic: historic.data || [],
