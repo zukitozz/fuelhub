@@ -10,11 +10,11 @@ import moment, { Moment } from 'moment';
 import { ApproveGuiaRequest } from '@/interfaces';
 
 export default function AproovePage() {
-    const fetcher = (url: string) => listBilling(url, fechaEmision);
+    const fetcher = (url: string) => listBilling(url, fechaEmision, null);
     const { data } = useSWR(`${Constants.API_URL}/billing`, fetcher);
     const [ fechaEmision, setFechaEmision] = useState<Date | null>(new Date());
     const [isLoading, setIsLoading] = useState(false);
-    const historic = data?.historic || [];
+    const historic = data?.historic?.items || [];
     const handleSubmitFormData = async (id: string, precio: number, cantidad: number, transaccion: string) => {
         setIsLoading(true);
         try {
@@ -41,10 +41,7 @@ export default function AproovePage() {
                 pago_yape: 0,
                 transaccion: transaccion.split(","),
             };
-            console.log("enviando la data de actualizacion");
-            console.log(payload);
             const respBilling = await aproveBilling(payload);
-            console.log(respBilling);
             if (respBilling.result) {
                 alert('Comprobante actualizado correctamente');
             } else {
@@ -66,7 +63,8 @@ export default function AproovePage() {
                     className="appearance-none"
                     value={fechaEmision??new Date()}
                     dateFormat="YYYY-MM-DD"
-                    timeFormat={false}
+                    timeFormat={false} 
+                    closeOnSelect={true}
                     onChange={(value: string | Moment) => {
                         if (typeof value === 'string') {
                             setFechaEmision(moment(value, "YYYY-MM-DD").toDate());
@@ -110,7 +108,6 @@ export default function AproovePage() {
                 </thead>
                 <tbody>
                     {historic.filter((item: any) => (item.tipo_comprobante === '01')).map((item : any) => (
-                    
                     <tr
                         key={item.id}
                         className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100" 
