@@ -81,21 +81,21 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     });
   };
   const handleAddDetail = (detail: IBillingFormDetail) => {
-    const { ruc_remitente, ruc_destinatario, gal_diesel, gal_regular, gal_premium } = detail;
-    if (ruc_remitente && ruc_destinatario && (gal_diesel > 0 || gal_regular > 0 || gal_premium > 0)) {
+    const { ruc_remitente, gal_diesel, gal_regular, gal_premium } = detail;
+    if (ruc_remitente && (gal_diesel > 0 || gal_regular > 0 || gal_premium > 0)) {
       setFormData((prevData) => ({
         ...prevData,
         detalle_envio: [...prevData.detalle_envio, detail],
       }));
     }else{
-        alert('Error!!!!!!   You must fill all detail fields!!!!');
+        alert('Debe llenar los campos para añadir un detalle');
     }
   };
   const handleSubmitFormData = async () => {
     setIsLoading(true);
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
-        const { remitente, destinatario, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
+        const { remitente, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
         const items: ICarrierItem[] = [];
         let item_number = 1;
         if(gal_diesel && gal_diesel > 0) {
@@ -144,8 +144,10 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         }
         const peso_combustible = +gal_diesel * Constants.PESO_GALON_DIESEL + (+gal_premium + +gal_regular) * Constants.PESO_GALON_GASOHOL;
         const peso_bruto = Constants.PESO_BRUTO_DEFAULT + +peso_combustible;    
-        const precio_referencial = initialData.rutas.find((ruta) => (ruta.ubigeo_origen === origen.ubigeo && ruta.ubigeo_destino === destinatario.ubigeo))?.precio_galon || 0;
+        //const precio_referencial = initialData.rutas.find((ruta) => (ruta.ubigeo_origen === origen.ubigeo && ruta.ubigeo_destino === destinatario.ubigeo))?.precio_galon || 0;
+        const precio_referencial = 0;
         const precio_galon = +(gal_precio && gal_precio > 0 ? gal_precio : precio_referencial);
+        const destinatario = remitente as IDestinatario;
         const transaccion = createUUID();
         const gr_transportista: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
@@ -157,13 +159,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           usuario: Constants.USUARIO_DEFAULT,
           tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
           detalle: items,
-          llegada_direccion: destinatario.direccion,
-          llegada_ubigeo: destinatario.ubigeo,
+          llegada_direccion: remitente.direccion,
+          llegada_ubigeo: remitente.ubigeo,
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
           ruc: Constants.RUC_EMPRESA,
-          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
           transaccion
         };
         const cantidad = ((+gal_diesel + +gal_premium + +gal_regular)*1000)/1000;
@@ -176,7 +178,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         const descripcion = `SERVICIO TRANSPORTE COMBUSTIBLE - `;
         const factura : IBilling = {
             serie: Constants.SERIE_FACTURA,
-            receptor : destinatario as IReceptor,
+            receptor : remitente as IReceptor,
             usuario: Constants.USUARIO_DEFAULT,
             tipo_comprobante: Constants.TIPO_COMPROBANTE.FACTURA,
             total_gravadas: valor,
@@ -192,7 +194,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             tipo_documento_afectado: Constants.TIPO_COMPROBANTE.GUIA_REMISION_TRANSPORTISTA,
             numeracion_documento_afectado: 'EG01-1',
             motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA',
-            etapa: Constants.ETAPA_FACTURACION.CREADO,
+            etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
             transaccion
         }
         const gr_remitente: ICarrier = {
@@ -205,13 +207,13 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           usuario: Constants.USUARIO_DEFAULT,
           tipo_comprobante: Constants.TIPO_COMPROBANTE.GUIA_REMISION_REMITENTE,
           detalle: items,
-          llegada_direccion: destinatario.direccion,
-          llegada_ubigeo: destinatario.ubigeo,
+          llegada_direccion: remitente.direccion,
+          llegada_ubigeo: remitente.ubigeo,
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
           ruc: remitente.numero_documento,
-          etapa: Constants.ETAPA_FACTURACION.CREADO,
+          etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
           transaccion
         }
         return {
@@ -252,9 +254,10 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       const conductor = conductores.find((con) => con.numero_documento === dni_conductor) as IConductor;
       const vehiculo = vehiculos.find((veh) => veh.placa === placa_vehiculo) as IVehiculo;
       const origen = origenes.find((ori) => ori.ubigeo === ubigeo_origen) as IOrigen;
+
       const detalle_items = detalle_envio.map((item) => ({
           remitente: remitentes.find((remi) => remi.numero_documento === item.ruc_remitente) as IRemitente,
-          destinatario: destinatarios.find((dest) => dest.numero_documento === item.ruc_destinatario) as IDestinatario,
+          destinatario: remitentes.find((remi) => remi.numero_documento === item.ruc_remitente) as IDestinatario,
           gal_diesel: item.gal_diesel,
           gal_regular: item.gal_regular,
           gal_premium: item.gal_premium,
@@ -275,11 +278,11 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     console.log(detail);
     setFormData((prevData) => ({
       ...prevData,
-      detalle_envio: prevData.detalle_envio.filter((d) => (d.ruc_remitente !== detail.remitente.numero_documento && d.ruc_destinatario !== detail.destinatario.numero_documento)),
+      detalle_envio: prevData.detalle_envio.filter((d) => (d.ruc_remitente !== detail.remitente.numero_documento)),
     }));
     setCompleteFormData((prevData) => ({
       ...prevData,
-      detalle_items: prevData.detalle_items.filter((d) => (d.remitente.numero_documento !== detail.remitente.numero_documento && d.destinatario.numero_documento !== detail.destinatario.numero_documento)),
+      detalle_items: prevData.detalle_items.filter((d) => (d.remitente.numero_documento !== detail.remitente.numero_documento)),
     }));
     alert('Detalle eliminado exitosamente');
   };
@@ -304,7 +307,6 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           {step === 'B' ? (
             <StepB
               remitentes={remitentes}
-              destinatarios={destinatarios}
               formData={formData}
               handleAddDetail={handleAddDetail}
               handlePrevStep={handlePrevStep}

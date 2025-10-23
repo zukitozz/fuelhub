@@ -21,7 +21,7 @@ export const initialData: SeedData = {
             tipo_documento: '6',
             numero_documento: '20605858601',
             razon_social: 'GRUPO EMPRESARIAL NONATO E.I.R.L.',
-            ubigeo: '150101',
+            ubigeo: '140408',
             direccion: 'CAR. PANAMERICANA SUR KM. 87.5 LOTE. 1 LIMA CAÑETE MALA',
             correo: '987654321',
             nombre_comercial: 'GRUPO EMPRESARIAL NONATO E.I.R.L.',
@@ -31,7 +31,7 @@ export const initialData: SeedData = {
             tipo_documento: '6',
             numero_documento: '20612024821',
             razon_social: 'GRUPO NONATO ANDAHUASI E.I.R.L.',
-            ubigeo: '150101',
+            ubigeo: '140513',
             direccion: 'CAR. HUAURA SAYAN KM. 40.5 LOTE. 7 SEC. SAN JUAN DE CAÑAS LIMA HUAURA SAYAN',
             correo: '987654321',
             nombre_comercial: 'GRUPO NONATO ANDAHUASI E.I.R.L.',
@@ -41,7 +41,7 @@ export const initialData: SeedData = {
             tipo_documento: '6',
             numero_documento: '20612016527',
             razon_social: 'GRUPO NONATO CHANCAYLLO E.I.R.L.',
-            ubigeo: '150101',
+            ubigeo: '140805',
             direccion: 'KM. 87.5 LOTE. 07 C.P. CARRETERA PANAMERICANA NO LIMA HUARAL CHANCAY',
             correo: '987654321',
             nombre_comercial: 'GRUPO NONATO CHANCAYLLO E.I.R.L.',
@@ -51,12 +51,62 @@ export const initialData: SeedData = {
             tipo_documento: '6',
             numero_documento: '20609785269',
             razon_social: 'SIRCON PACHACUTEC E.I.R.L.',
-            ubigeo: '150101',
+            ubigeo: '240106',
             direccion: 'AV. AVENIGA G MZA. W4 LOTE. 1 RES. GRUPO RESIDENCIAL D1 PROV. CONST. DEL CALLAO PROV. CONST',
             correo: '987654321',
             nombre_comercial: 'SIRCON PACHACUTEC E.I.R.L.',
             token_mifact: "tOcEEdPoW/SnZ0lYcWH/eA=="
-        }                        
+        },
+        {
+            tipo_documento: '6',
+            numero_documento: '10225180721',
+            razon_social: 'BERLINA CIERTO ROJAS',
+            ubigeo: '140106',
+            direccion: 'LOTE 1 SUB LOTE 3 ZONA G PARCELA RUSTICA DEL FUNDO CHACRA CERRO - COMAS - LIMA',
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
+        },
+        {
+            tipo_documento: '6',
+            numero_documento: '10225126157',
+            razon_social: 'FAUSTO NONATO RAMOS',
+            ubigeo: '140139',
+            direccion: 'AV. SAN MARTIN KM. 17.8 MZ. C LOTE 2 Y 3 . ASOC. DE VIVIENDAS LA ESPERANZA DE CIENEGUILLA - CIENEGUILLA - LIMA',
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
+        },
+        {
+            tipo_documento: '6',
+            numero_documento: '20602092381',
+            razon_social: 'ESTACION DE SERVICIOS NONATO E.I.R.L.',
+            ubigeo: '240106',
+            direccion: 'AV. LOS ARQUITECTOS MZA. A LOTE. 12 SEC. G BARRIO XV GRUPO RESIDENCIAL 4 PROYECTO ESPECIAL PACHACUTEC (MZ A, LOTES 10 Y 12) PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - VENTANILLA',
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
+        },
+        {
+            tipo_documento: '6',
+            numero_documento: '20600850157',
+            razon_social: 'ESTACION DE SERVICIOS BERLI E.I.R.L.',
+            ubigeo: '140106',
+            direccion: 'AV. HEROES DEL ALTO CENEPA MZA. G LOTE. 01 ASC. FUNDO CHACRA LIMA - LIMA - COMAS',
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
+        },
+        {
+            tipo_documento: '6',
+            numero_documento: '20603538065',
+            razon_social: 'SIRCON ENERGY EIRL',
+            ubigeo: '240106',
+            direccion: 'AV. AV NESTOR GAMBETA KM. 6.5 OTR. AV NESTOR GAMBETA, KM 6.5 PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - VENTANILLA',
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
+        }                    
     ],
     destinatarios: [
         {
@@ -65,7 +115,9 @@ export const initialData: SeedData = {
             razon_social: 'GRUPO EMPRESARIAL NONATO E.I.R.L.',
             ubigeo: '140408',
             direccion: 'CAR. PANAMERICANA SUR KM. 87.5 LOTE. 1 LIMA CAÑETE MALA',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: 'GRUPO EMPRESARIAL NONATO E.I.R.L.',
+            token_mifact: "IolOxCvrKdSnZ0lYcWH/eA=="
         },
         {
             tipo_documento: '6',
@@ -73,7 +125,9 @@ export const initialData: SeedData = {
             razon_social: 'GRUPO NONATO ANDAHUASI E.I.R.L.',
             ubigeo: '140513',
             direccion: 'CAR. HUAURA SAYAN KM. 40.5 LOTE. 7 SEC. SAN JUAN DE CAÑAS LIMA HUAURA SAYAN',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: 'GRUPO NONATO ANDAHUASI E.I.R.L.',
+            token_mifact: "l7Eo1p72cF+nZ0lYcWH/eA=="
         },
         {
             tipo_documento: '6',
@@ -81,7 +135,9 @@ export const initialData: SeedData = {
             razon_social: 'GRUPO NONATO CHANCAYLLO E.I.R.L.',
             ubigeo: '140805',
             direccion: 'KM. 87.5 LOTE. 07 C.P. CARRETERA PANAMERICANA NO LIMA HUARAL CHANCAY',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: 'GRUPO NONATO CHANCAYLLO E.I.R.L.',
+            token_mifact: "l7Eo1p72cF+6dkooMaHrWg=="
         },
         {
             tipo_documento: '6',
@@ -89,7 +145,9 @@ export const initialData: SeedData = {
             razon_social: 'SIRCON PACHACUTEC E.I.R.L.',
             ubigeo: '240106',
             direccion: 'AV. AVENIGA G MZA. W4 LOTE. 1 RES. GRUPO RESIDENCIAL D1 PROV. CONST. DEL CALLAO PROV. CONST',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: 'SIRCON PACHACUTEC E.I.R.L.',
+            token_mifact: "tOcEEdPoW/SnZ0lYcWH/eA=="
         },
         {
             tipo_documento: '6',
@@ -97,7 +155,9 @@ export const initialData: SeedData = {
             razon_social: 'BERLINA CIERTO ROJAS',
             ubigeo: '140106',
             direccion: 'LOTE 1 SUB LOTE 3 ZONA G PARCELA RUSTICA DEL FUNDO CHACRA CERRO - COMAS - LIMA',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
         },
         {
             tipo_documento: '6',
@@ -105,7 +165,9 @@ export const initialData: SeedData = {
             razon_social: 'FAUSTO NONATO RAMOS',
             ubigeo: '140139',
             direccion: 'AV. SAN MARTIN KM. 17.8 MZ. C LOTE 2 Y 3 . ASOC. DE VIVIENDAS LA ESPERANZA DE CIENEGUILLA - CIENEGUILLA - LIMA',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
         },
         {
             tipo_documento: '6',
@@ -113,7 +175,9 @@ export const initialData: SeedData = {
             razon_social: 'ESTACION DE SERVICIOS NONATO E.I.R.L.',
             ubigeo: '240106',
             direccion: 'AV. LOS ARQUITECTOS MZA. A LOTE. 12 SEC. G BARRIO XV GRUPO RESIDENCIAL 4 PROYECTO ESPECIAL PACHACUTEC (MZ A, LOTES 10 Y 12) PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - VENTANILLA',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
         },
         {
             tipo_documento: '6',
@@ -121,7 +185,9 @@ export const initialData: SeedData = {
             razon_social: 'ESTACION DE SERVICIOS BERLI E.I.R.L.',
             ubigeo: '140106',
             direccion: 'AV. HEROES DEL ALTO CENEPA MZA. G LOTE. 01 ASC. FUNDO CHACRA LIMA - LIMA - COMAS',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
         },
         {
             tipo_documento: '6',
@@ -129,7 +195,9 @@ export const initialData: SeedData = {
             razon_social: 'SIRCON ENERGY EIRL',
             ubigeo: '240106',
             direccion: 'AV. AV NESTOR GAMBETA KM. 6.5 OTR. AV NESTOR GAMBETA, KM 6.5 PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - VENTANILLA',
-            correo: '987654321'
+            correo: '987654321',
+            nombre_comercial: "",
+            token_mifact: ""
         }                  
     ],
     conductores: [
