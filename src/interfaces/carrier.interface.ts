@@ -20,6 +20,7 @@ export interface ICarrier {
     fecha_actual?: string;
     llegada_direccion: string;
     llegada_ubigeo: string;
+    partida_identificador: string;
     partida_direccion: string;
     partida_ubigeo: string;
     peso_bruto: number;

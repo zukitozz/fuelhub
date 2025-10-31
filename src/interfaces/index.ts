@@ -10,6 +10,7 @@ export * from './destinatario.interface';
 export * from './envio.interface';
 export * from './item.interface';
 export * from './origen.interface';
+export * from './product.interface';
 export * from './receptor.interface';
 export * from './remitente.interface';
 export * from './serie.interface';

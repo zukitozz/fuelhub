@@ -21,6 +21,7 @@ export const initialFormData: IBillingForm = {
 export const initialCompleteFormData: IBillingCompleteForm = {
   detalle_items: [],
   origen: {
+    id: '',
     ubigeo: '',
     direccion: '',
     nombre: ''
@@ -161,6 +162,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           detalle: items,
           llegada_direccion: remitente.direccion,
           llegada_ubigeo: remitente.ubigeo,
+          partida_identificador: origen.id,
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
@@ -209,6 +211,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           detalle: items,
           llegada_direccion: remitente.direccion,
           llegada_ubigeo: remitente.ubigeo,
+          partida_identificador: origen.id,
           partida_direccion: origen.direccion,
           partida_ubigeo: origen.ubigeo,
           peso_bruto,
