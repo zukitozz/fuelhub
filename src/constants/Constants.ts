@@ -1,5 +1,5 @@
 export const Constants = {
-    API_URL: 'https://r4pr2pvb3m.execute-api.us-east-2.amazonaws.com/prod',
+    API_URL: 'https://gs0akg90oa.execute-api.us-east-2.amazonaws.com/prod',
     TIMEOUT: 5000,
     MAX_RETRIES: 3,
     SERIE_GUIA_REMISION_REMITENTE: 'T001',

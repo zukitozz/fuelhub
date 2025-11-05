@@ -5,7 +5,7 @@ import axios from "axios";
 export const registerProduct = async( product: IProduct ) => {
   try {
   
-    const response = await axios.post(`${Constants.API_URL}/product`, {
+    const response = await axios.post(`${Constants.API_URL}/route`, {
       ...product
     },{headers: {'content-type': 'application/json'}});
 
