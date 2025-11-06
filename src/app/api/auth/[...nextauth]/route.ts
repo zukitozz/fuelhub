@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
   ],
   pages: {
-    signIn: '/auth',
+    signIn: '/',
   }, 
 }
 console.log("Cognito Provider Configured with:");

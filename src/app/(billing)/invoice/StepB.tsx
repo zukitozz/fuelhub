@@ -141,7 +141,7 @@ const StepB: React.FC<StepBProps> = ({
             handleCleanForm();
           }}
         >
-          AGREGAR
+          AGREGAR ORDEN
         </button>          
       </div>
       <div className='my-2'>
