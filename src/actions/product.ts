@@ -1,5 +1,5 @@
 import { Constants } from "@/constants";
-import { IPagination, IProduct } from "@/interfaces";
+import { IPagination, IProduct, IRutaResponse } from "@/interfaces";
 import axios from "axios";
 
 export const registerProduct = async( product: IProduct ) => {
@@ -28,21 +28,8 @@ export const registerProduct = async( product: IProduct ) => {
 
 
 
-export const listProducts = async(url: string, pagination: IPagination | null) => {
+export const listProducts = async(url: string, pagination: IPagination | null): Promise<IRutaResponse> => {
   try {
-    //const user = await posApi.get('https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing', { withCredentials: false });
-    // const user = await axios({
-    //   method: 'get',
-    //   headers: {
-    //       'Access-Control-Allow-Origin': '*',
-    //       'origin':'x-requested-with',
-    //       'Access-Control-Allow-Methods': 'GET,DELETE,PATCH,POST,PUT',
-    //       "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-    //       'Content-Type': 'application/json',
-    //   },      
-    //   url: 'https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing',
-    //   withCredentials: false
-    // })
     const params: any = {
       limit: 10
     }
@@ -60,12 +47,17 @@ export const listProducts = async(url: string, pagination: IPagination | null) =
     });
     return {
       result: true,
+      message: 'Respuesta satisfactoria',
       historic: historic.data || [],
     }
   }catch (error) {
     return {
       result: false,
-      message: 'No se pudo obtener la lista de comprobantes',
+      message: 'No se pudo obtener la lista de comprobantes' + error,
+      historic: {
+        items: [],
+        lastEvaluatedKey: null
+      }
     }
   }
 }

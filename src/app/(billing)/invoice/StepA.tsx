@@ -55,7 +55,7 @@ const StepA: React.FC<StepAProps> = ({ formData, handleChangeInput, handleNextSt
       </div>      
       <div className='my-2 flex justify-end items-center'>
         <button
-          className='bg-green-400 px-4 py-2 rounded-xl font-large'
+          className='bg-blue-400 px-4 py-2 rounded-xl font-large'
           onClick={handleNextStep}
         >
           SIGUIENTE

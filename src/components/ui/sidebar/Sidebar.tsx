@@ -4,10 +4,8 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from 'react-icons/io5';
-
 import { useUIStore } from '@/store';
 import { useEffect } from 'react';
-
 
 export const Sidebar = () => {
   const { data: session, status } = useSession()
@@ -21,15 +19,14 @@ export const Sidebar = () => {
   const handleClickSingOut  = async () => {
     signOut();
   }
-  useEffect( () => {
-    console.log("Session status changed:");
-    console.log({session, status});
-  }, [session, status]);
-  
+
+  useEffect(() => {
+    console.log("session sidebar:", status);
+  }, [status])
+
+
   return (
     <div>
-
-      {/* Background black */ }
       {
         isSideMenuOpen && (
           <div
@@ -38,9 +35,6 @@ export const Sidebar = () => {
 
         )
       }
-
-
-      {/* Blur */ }
       {
         isSideMenuOpen && (
           <div
@@ -50,8 +44,6 @@ export const Sidebar = () => {
 
         )
       }
-
-      {/* Sidemenu */ }
       <nav
         className={
           clsx(
@@ -101,28 +93,47 @@ export const Sidebar = () => {
           <span className="ml-3 text-xl">Histórico</span>
         </Link>
 
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all" 
-          legacyBehavior
-        >
-          <a onClick={(e) => handleClickSingIn()}>
-            <IoLogInOutline size={ 30 } className='inline'/>
-            <span className="ml-3 text-xl inline">Ingresar</span>
-          </a>
-
-        </Link>
+        {
+          status === 'authenticated' && (
+            <Link
+              href="/routes"
+              className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+            >
+              <IoTicketOutline size={ 30 } />
+              <span className="ml-3 text-xl">Rutas/Precios</span>
+            </Link>
+          )
+        }        
         <div className="w-full h-px bg-gray-200 my-10" />
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all" 
-          legacyBehavior
-        >
-          <a onClick={(e) => handleClickSingOut()}>
-            <IoLogOutOutline size={ 30 } className='inline'/>
-            <span className="ml-3 text-xl inline">Salir</span>
-          </a>
-        </Link>
+        {
+          status === 'authenticated' && (
+            <Link
+              href="/"
+              className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all" 
+              legacyBehavior
+            >
+              <a onClick={(e) => handleClickSingOut()}>
+                <IoLogOutOutline size={ 30 } className='inline'/>
+                <span className="ml-3 text-xl inline">Salir</span>
+              </a>
+            </Link>
+          )
+        }   
+        {
+          status === 'unauthenticated' && (
+            <Link
+              href="/"
+              className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all" 
+              legacyBehavior
+            >
+              <a onClick={(e) => handleClickSingIn()}>
+                <IoLogInOutline size={ 30 } className='inline'/>
+                <span className="ml-3 text-xl inline">Ingresar</span>
+              </a>
+
+            </Link>
+          )
+        }                   
 
         {/* Line Separator */ }
         
@@ -136,13 +147,6 @@ export const Sidebar = () => {
           <span className="ml-3 text-xl">Productos</span>
         </Link> */}
 
-        {/* <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoTicketOutline size={ 30 } />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link> */}
 {/* 
         <Link
           href="/"

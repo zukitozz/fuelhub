@@ -1,13 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { registerBilling } from "@/actions";
+import { listProducts, registerBilling } from "@/actions";
 import StepA from './StepA';
 import StepB from './StepB';
 import StepC from './StepC';
 import StepFinal from './StepFinal';
 import { SeedData } from '@/seed/seed';
-import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IVehiculo } from '@/interfaces';
+import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingForm, IBillingFormDetail, ICarrier, ICarrierItem, IConductor, IDestinatario, IEnvioGuiaRemision, IOrigen, IReceptor, IRemitente, IRutaResponse, IVehiculo } from '@/interfaces';
 import { Constants } from '@/constants';
 import { BillingLoading } from '@/components';
 import { createUUID } from '@/util';
@@ -94,6 +94,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   };
   const handleSubmitFormData = async () => {
     setIsLoading(true);
+    const { historic } = await listProducts(`${Constants.API_URL}/route`, null);
+    const routes = historic.items;
     const { detalle_items, origen, vehiculo, conductor } = completeFormData;
     const envio_guias: IEnvioGuiaRemision[] = detalle_items.map((item, index) => {
         const { remitente, gal_diesel, gal_regular, gal_premium, gal_precio, scop_diesel, scop_regular, scop_premium } = item;
@@ -145,10 +147,9 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         }
         const peso_combustible = +gal_diesel * Constants.PESO_GALON_DIESEL + (+gal_premium + +gal_regular) * Constants.PESO_GALON_GASOHOL;
         const peso_bruto = Constants.PESO_BRUTO_DEFAULT + +peso_combustible;    
-        //const precio_referencial = initialData.rutas.find((ruta) => (ruta.ubigeo_origen === origen.ubigeo && ruta.ubigeo_destino === destinatario.ubigeo))?.precio_galon || 0;
-        const precio_referencial = 0;
-        const precio_galon = +(gal_precio && gal_precio > 0 ? gal_precio : precio_referencial);
         const destinatario = remitente as IDestinatario;
+        const precio_referencial = routes.find((ruta) => (ruta.origen.id === origen.id && ruta.destino.numero_documento === destinatario.numero_documento))?.precio || 0;
+        const precio_galon = +(gal_precio && gal_precio > 0 ? gal_precio : precio_referencial);
         const transaccion = createUUID();
         const gr_transportista: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_TRANSPORTISTA,
@@ -250,9 +251,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       alert('Pedidos registrados correctamente');
       window.location.reload();
     });
-
   };
-  const handlePreviewFormData = () => {
+  const handlePreviewFormData = async () => {
       const { ubigeo_origen, placa_vehiculo, dni_conductor, detalle_envio } = formData;
       const conductor = conductores.find((con) => con.numero_documento === dni_conductor) as IConductor;
       const vehiculo = vehiculos.find((veh) => veh.placa === placa_vehiculo) as IVehiculo;
