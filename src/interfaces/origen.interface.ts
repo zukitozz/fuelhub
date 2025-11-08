@@ -1,5 +1,5 @@
 export interface IOrigen {
-    id?: string;
+    id: string;
     nombre: string;
     ubigeo: string;
     direccion: string;   

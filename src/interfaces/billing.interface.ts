@@ -56,8 +56,7 @@ export interface IBillingForm {
 }
 
 export interface IBillingFormDetail {
-  ruc_remitente: string; 
-  ruc_destinatario: string;
+  ruc_remitente: string;
   gal_diesel: number;
   gal_regular: number;
   gal_premium: number;

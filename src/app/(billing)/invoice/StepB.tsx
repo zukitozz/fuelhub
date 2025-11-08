@@ -4,7 +4,6 @@ import { useState } from "react";
 interface StepBProps {
   formData: IBillingForm;
   remitentes: IRemitente[];
-  destinatarios: IDestinatario[];
   handleAddDetail: (detail: IBillingFormDetail) => void;
   handlePrevStep: () => void;
   handlePreviewFormData: () => void;
@@ -12,7 +11,6 @@ interface StepBProps {
 
 const detailFormData: IBillingFormDetail = {
   ruc_remitente: "",
-  ruc_destinatario: "",
   gal_diesel: 0,
   gal_regular: 0,
   gal_premium: 0,
@@ -25,7 +23,6 @@ const detailFormData: IBillingFormDetail = {
 const StepB: React.FC<StepBProps> = ({
   formData,
   remitentes,
-  destinatarios,
   handleAddDetail,
   handlePrevStep,
   handlePreviewFormData,
@@ -50,11 +47,10 @@ const StepB: React.FC<StepBProps> = ({
         Ingrese: Información del envío y precios
       </h1>
       <div className='my-2'>
-        <label htmlFor="ruc_remitente" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Remitente</label>
+        <label htmlFor="ruc_remitente" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Grifo destino:</label>
         <select 
           name="ruc_remitente"
           onChange={handleChangeInput} 
-          defaultValue={ '' }
           value={ formDetailData.ruc_remitente }
           className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
             <option value={''}>Seleccione</option>
@@ -62,49 +58,32 @@ const StepB: React.FC<StepBProps> = ({
                 <option key={ field.numero_documento } value={ field.numero_documento }>{ field.razon_social }</option>
             ))}
         </select>       
-      </div>
-      <div className='my-2'>
-        <label htmlFor="ruc_destinatario" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Destinatario</label>
-        <select 
-          name="ruc_destinatario"
-          onChange={handleChangeInput} 
-          defaultValue={ '' }
-          value={ formDetailData.ruc_destinatario }
-          className={`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
-            <option value={''}>Seleccione</option>
-            {destinatarios.map((field) => (
-                <option key={ field.numero_documento } value={ field.numero_documento }>{ field.razon_social }</option>
-            ))}
-        </select>       
-      </div>   
+      </div> 
       <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
-        <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL DBDIESEL</label>
+        <label htmlFor="gal_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white bg-[#ceff25]">DBDIESEL</label>
         <input 
           type="number" 
           step="0.001" 
           name="gal_diesel" 
-          defaultValue={ '' }
           value={ formDetailData.gal_diesel }
-          className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
+          className="block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           onChange={(e) => handleChangeInput(e)}
         />
         <label htmlFor="scop_diesel" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">Código SCOP</label>
         <input 
           type="text" 
           name="scop_diesel" 
-          defaultValue={ '' }
           value={ formDetailData.scop_diesel }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />        
       </div>
       <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
-        <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">GAL PREMIUM</label>
+        <label htmlFor="gal_premium" className="block mb-2 text-lg font-large text-gray-900 dark:text-white bg-[#4c49ea]">PREMIUM</label>
         <input 
           type="number" 
           step="0.001" 
           name="gal_premium" 
-          defaultValue={ '' }
           value={ formDetailData.gal_premium }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
@@ -113,19 +92,17 @@ const StepB: React.FC<StepBProps> = ({
         <input 
           type="text" 
           name="scop_premium" 
-          defaultValue={ '' }
           value={ formDetailData.scop_premium }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
         />            
       </div>
       <div className='md:inline-flex items-center lg:space-x-12 my-2 justify-between w-full'>
-        <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white">REGULAR</label>
+        <label htmlFor="gal_regular" className="block mb-2 text-lg font-large text-gray-900 dark:text-white bg-[#3ecd5e]">REGULAR</label>
         <input 
           type="number" 
           step="0.001" 
           name="gal_regular" 
-          defaultValue={ '' }
           value={ formDetailData.gal_regular }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
@@ -134,7 +111,6 @@ const StepB: React.FC<StepBProps> = ({
         <input 
           type="text" 
           name="scop_regular" 
-          defaultValue={ '' }
           value={ formDetailData.scop_regular }
           className="`block w-full px-4 py-3 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`"
           onChange={(e) => handleChangeInput(e)}
@@ -158,7 +134,7 @@ const StepB: React.FC<StepBProps> = ({
             handleCleanForm();
           }}
         >
-          AGREGAR
+          AGREGAR ORDEN
         </button>          
       </div>
       <div className='my-2'>
@@ -175,7 +151,7 @@ const StepB: React.FC<StepBProps> = ({
           ANTERIOR
         </button>        
         <button
-          className='bg-green-400 px-4 py-2 rounded-xl mb-3'
+          className='bg-blue-400 px-4 py-2 rounded-xl mb-3'
           onClick={handlePreviewFormData}
         >
           SIGUIENTE

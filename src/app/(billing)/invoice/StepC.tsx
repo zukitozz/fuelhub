@@ -26,45 +26,42 @@ const StepC: React.FC<StepCProps> = ({
       <DataConfirmRow label='CONDUCTOR:' value={completeFormData.conductor.nombres} />
       <DataConfirmRow label='VEHICULO:' value={completeFormData.vehiculo.placa} />
 
-      <div className='my-2 space-x-12'>
-          <table className="w-full text-lg text-center rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100 border border-gray-300 rounded-lg border-separate">
-            <thead className="text-lg text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
-              <tr>
-                <th scope="col" className="px-4 py-3">Remitente</th>
-                <th scope="col" className="px-4 py-3">Destinatario</th>
-                <th scope="col" className="px-1 py-3">Diesel</th>
-                <th scope="col" className="px-1 py-3">Scop</th>
-                <th scope="col" className="px-1 py-3">Premium</th>
-                <th scope="col" className="px-1 py-3">Scop</th>
-                <th scope="col" className="px-1 py-3">Regular</th>
-                <th scope="col" className="px-1 py-3">Scop</th>
-                <th scope="col" className="px-6 py-1">Eliminar</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm text-black dark:text-white border-b border-gray-300">
-              { completeFormData.detalle_items.map( ( detail, index ) => (
-                <tr key={ detail.remitente.razon_social || detail.destinatario.razon_social }>
-                  <td className='text-center'>{ detail.remitente.razon_social }</td>
-                  <td className='text-center'>{ detail.destinatario.razon_social }</td>
-                  <td className='text-right'>{ detail.gal_diesel }</td>
-                  <td className='text-right'>{ detail.scop_diesel }</td>
-                  <td className='text-right'>{ detail.gal_premium }</td>
-                  <td className='text-right'>{ detail.scop_premium }</td>             
-                  <td className='text-right'>{ detail.gal_regular }</td>
-                  <td className='text-right'>{ detail.scop_regular }</td>
-                  <td className='text-center'>
-                    <div className='flex items-center gap-2 cursor-pointer hover:text-blue-600'
-                      onClick={() => {
-                        handleDeleteDetail(detail);
-                      }}
-                    ><MdDelete /><span>Eliminar</span>
-                    </div>
-                  </td>                  
+          <div className='my-2 space-x-12'>
+            <table className="w-full text-lg text-center rtl:text-right text-dark-100 dark:text-blue-100 bg-white-100 border border-gray-300 rounded-lg border-separate">
+              <thead className="text-lg text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
+                <tr>
+                  <th scope="col" className="px-4 py-3" rowSpan={3}>Remitente</th>
+                  <th scope="col" className="px-4 py-3" rowSpan={3}>Destinatario</th>
+                  <th scope="col" className="px-1 py-3">Producto</th>
+                  <th scope="col" className="px-1 py-3">Cantidad</th>
+                  <th scope="col" className="px-1 py-3">Scop</th>
                 </tr>
-              ) ) }
-            </tbody>
-          </table>
-      </div>
+              </thead>      
+        { completeFormData.detalle_items.map( ( detail, index ) => (
+              <tbody key={index} className="text-sm text-black dark:text-white border-4 border-gray-300">
+                  <tr>
+                    <td className='text-center' rowSpan={0}>{ detail.remitente.razon_social }</td>
+                    <td className='text-center' rowSpan={0}>{ detail.destinatario.razon_social }</td>
+                    <td className='text-right'>DIESEL</td>
+                    <td className='text-right'>{ detail.gal_diesel }</td>
+                    <td className='text-right'>{ detail.scop_diesel }</td>                
+                  </tr>
+                  <tr>
+                    <td className='text-right'>PREMIUM</td>
+                    <td className='text-right'>{ detail.gal_premium }</td>
+                    <td className='text-right'>{ detail.scop_premium }</td>              
+                  </tr>
+                  <tr>
+                    <td className='text-right'>REGULAR</td>            
+                    <td className='text-right'>{ detail.gal_regular }</td>
+                    <td className='text-right'>{ detail.scop_regular }</td>                
+                  </tr>                                      
+              </tbody>
+
+          ) ) }
+            </table>
+          </div>      
+
       <div className='my-2 flex justify-between items-center'>
         <button
           className='bg-yellow-400 px-4 py-2 rounded-xl'
