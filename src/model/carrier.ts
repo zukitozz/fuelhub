@@ -15,6 +15,7 @@ export class Carrier implements ICarrier{
     fecha_actual?: string;
     llegada_direccion: string;
     llegada_ubigeo: string;
+    partida_identificador: string;
     partida_direccion: string;
     partida_ubigeo: string;
     peso_bruto: number;
@@ -23,7 +24,7 @@ export class Carrier implements ICarrier{
     etapa: string;
     transaccion: string;    
     detalle?: ICarrierItem[];
-    constructor(serie: string, remitente: IRemitente, destinatario: IDestinatario, conductor: IConductor, vehiculo: IVehiculo, usuario: string, tipo_comprobante: string, numeracion: string, llegada_direccion: string, llegada_ubigeo: string, partida_direccion: string, partida_ubigeo: string, peso_bruto: number, ruc: string, etapa: string, transaccion: string, detalle: ICarrierItem[]) {
+    constructor(serie: string, remitente: IRemitente, destinatario: IDestinatario, conductor: IConductor, vehiculo: IVehiculo, usuario: string, tipo_comprobante: string, numeracion: string, llegada_direccion: string, llegada_ubigeo: string, partida_identificador: string, partida_direccion: string, partida_ubigeo: string, peso_bruto: number, ruc: string, etapa: string, transaccion: string, detalle: ICarrierItem[]) {
         this.remitente = remitente;
         this.destinatario = destinatario;
         this.conductor = conductor;
@@ -35,6 +36,7 @@ export class Carrier implements ICarrier{
         this.llegada_direccion = llegada_direccion;
         this.llegada_ubigeo = llegada_ubigeo;
         this.partida_direccion = partida_direccion;
+        this.partida_identificador = partida_identificador;
         this.partida_ubigeo = partida_ubigeo;
         this.peso_bruto = peso_bruto;
         this.ruc = ruc;
