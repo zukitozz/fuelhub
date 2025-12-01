@@ -9,7 +9,8 @@ type FormData = {
 
 export default function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const callbackUrl = process.env.NEXT_PUBLIC_CALLBACK_URL || '';
+    const callbackUrl = `${process.env.NEXT_PUBLIC_CALLBACK_URL}api/auth/callback/cognito`;
+    
     const onSubmit  = async () => {
         const result = await signIn('cognito',{ redirect: false, callbackUrl });
         console.log({result});
