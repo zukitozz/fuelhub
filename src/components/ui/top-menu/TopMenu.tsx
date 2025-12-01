@@ -10,8 +10,6 @@ import { useUIStore } from '@/store';
 export const TopMenu = () => {
 
   const openSideMenu = useUIStore( state => state.openSideMenu );
-  console.log("hola");
-  console.log(process.env.NEXTAUTH_SECRET);
   return (
     <nav className="flex px-5 justify-between items-center w-full">
 
