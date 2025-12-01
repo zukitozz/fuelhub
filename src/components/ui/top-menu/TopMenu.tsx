@@ -20,7 +20,7 @@ export const TopMenu = () => {
         <Link
           href="/">
           <span className={ `${ titleFont.className } antialiased font-bold` } >FuelHub</span>
-          <span> | Facturación ${process.env.NEXTAUTH_SECRET} hola</span>
+          <span> | Facturación</span>
         </Link>
       </div>
 
