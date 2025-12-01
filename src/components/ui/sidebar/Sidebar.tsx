@@ -11,7 +11,7 @@ export const Sidebar = () => {
   const { data: session, status } = useSession()
   const isSideMenuOpen = useUIStore( state => state.isSideMenuOpen );
   const closeMenu = useUIStore( state => state.closeSideMenu );
-  const callbackUrl = 'http://localhost:8080/routes';
+  const callbackUrl = `${process.env.NEXT_PUBLIC_CALLBACK_URL}routes`;
   const handleClickSingIn  = async () => {
         const result = await signIn('cognito',{ redirect: false, callbackUrl });
         console.log({result});
