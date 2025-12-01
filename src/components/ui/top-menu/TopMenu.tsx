@@ -8,7 +8,8 @@ import { useUIStore } from '@/store';
 
 
 export const TopMenu = () => {
-
+  console.log("call back url")
+  console.log(process.env.NEXT_PUBLIC_CALLBACK_URL)
   const openSideMenu = useUIStore( state => state.openSideMenu );
   return (
     <nav className="flex px-5 justify-between items-center w-full">
