@@ -10,7 +10,6 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
-  secret: 'IamVeryHandsome',
   pages: {
     signIn: '/',
   }, 
