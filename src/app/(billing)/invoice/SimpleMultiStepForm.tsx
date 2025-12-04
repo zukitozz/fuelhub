@@ -11,6 +11,7 @@ import { IBilling, IBillingCompleteForm, IBillingCompleteFormDetail, IBillingFor
 import { Constants } from '@/constants';
 import { BillingLoading } from '@/components';
 import { createUUID } from '@/util';
+import { useUIStore } from '@/store';
 
 export const initialFormData: IBillingForm = {
   ubigeo_origen: '',
@@ -43,7 +44,7 @@ interface SimpleMultiStepFormProps {
   initialData: SeedData;
 };
 const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }) => {
-  const router = useRouter();
+  const { showAlert } = useUIStore();
   const [step, setStep] = useState('A');
   const [formData, setFormData] = useState(initialFormData);
   const [completeFormData, setCompleteFormData] = useState(initialCompleteFormData);
@@ -53,7 +54,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
   const handleNextStep = () => {
     if (step === 'A') {
       if(!formData.ubigeo_origen || !formData.placa_vehiculo || !formData.dni_conductor){
-          alert('Error!!!!!!   You must fill all fields!!!!');
+          showAlert('Por favor complete todos los campos, no se creó el registro', 'warning');
           return;
       }
       setStep('B');
@@ -89,7 +90,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
         detalle_envio: [...prevData.detalle_envio, detail],
       }));
     }else{
-        alert('Debe llenar los campos para añadir un detalle');
+      showAlert('Debe llenar los campos para añadir un detalle', 'warning');
     }
   };
   const handleSubmitFormData = async () => {
@@ -169,6 +170,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           peso_bruto,
           ruc: Constants.RUC_EMPRESA,
           etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
+          visibilidad_administrador: 0,
           transaccion
         };
         const cantidad = ((+gal_diesel + +gal_premium + +gal_regular)*1000)/1000;
@@ -198,7 +200,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
             numeracion_documento_afectado: 'EG01-1',
             motivo_documento_afectado: 'GUIA DE REMISION TRANSPORTISTA',
             etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
-            transaccion
+            transaccion,
+            visibilidad_administrador: 1
         }
         const gr_remitente: ICarrier = {
           serie: Constants.SERIE_GUIA_REMISION_REMITENTE,
@@ -218,7 +221,8 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           peso_bruto,
           ruc: remitente.numero_documento,
           etapa: Constants.ETAPA_FACTURACION.POR_ENVIAR,
-          transaccion
+          transaccion,
+          visibilidad_administrador: 0
         }
         return {
           factura,
@@ -228,19 +232,21 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
     });
     envio_guias.forEach( async (envio) => {
       const { factura, gr_remitente, gr_transportista } = envio;
-      console.log('Registrando Guia de Remision Remitente...', gr_remitente );
+      showAlert('Registrando Guia de Remision Remitente', 'info')
       const respCarrier = await registerBilling( gr_remitente );
       if ( !respCarrier.result ) {
           console.log( respCarrier.message );
+          showAlert('Error al registrar Guia de Remision Remitente', 'error')
           return;
       }
-      console.log('Registrando Guia de Remision Transportista...', gr_transportista );
+      showAlert('Registrando Guia de Remision Transportista', 'info')
       const respCarrierTransportista = await registerBilling( gr_transportista );
       if ( !respCarrierTransportista.result ) {
+        showAlert('Error al registrar Guia de Remision Transportista', 'error')
           console.log( respCarrierTransportista.message );
           return;
       }      
-      console.log('Registrando Factura...', factura);
+      showAlert('Registrando Factura', 'info')
       const carrier = respCarrierTransportista.comprobante as ICarrier;
       factura.numeracion_documento_afectado = carrier.numeracion;
       const respBilling = await registerBilling( factura );
@@ -248,7 +254,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
           console.log( respBilling.message );
       }
       setIsLoading(false);
-      alert('Pedidos registrados correctamente');
+      showAlert('Pedidos registrados correctamente', 'success');
       window.location.reload();
     });
   };
@@ -278,7 +284,6 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       setStep('C');
   }  
   const handleDeleteDetail = (detail: IBillingCompleteFormDetail) => {
-    console.log(detail);
     setFormData((prevData) => ({
       ...prevData,
       detalle_envio: prevData.detalle_envio.filter((d) => (d.ruc_remitente !== detail.remitente.numero_documento)),
@@ -287,7 +292,7 @@ const SimpleMultiStepForm: React.FC<SimpleMultiStepFormProps> = ({ initialData }
       ...prevData,
       detalle_items: prevData.detalle_items.filter((d) => (d.remitente.numero_documento !== detail.remitente.numero_documento)),
     }));
-    alert('Detalle eliminado exitosamente');
+    showAlert('Detalle eliminado exitosamente', 'success');
   };
 
   return (

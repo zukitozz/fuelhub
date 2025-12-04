@@ -28,7 +28,7 @@ export const registerBilling = async( billing: IBilling|ICarrier ) => {
 
 
 
-export const listBilling = async(url: string, fecha_emision: Date | null, pagination: IPagination | null) => {
+export const listBilling = async(url: string, fecha_emision: Date | null, role: string | null, pagination: IPagination | null) => {
   try {
     //const user = await posApi.get('https://tiyzbrfo75.execute-api.us-east-2.amazonaws.com/prod/billing', { withCredentials: false });
     // const user = await axios({
@@ -47,6 +47,7 @@ export const listBilling = async(url: string, fecha_emision: Date | null, pagina
     const formattedDate = fecha_emision?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
     const params: any = {
       fecha_emision: formattedDate,
+      role,
       limit: 10
     }
     if(pagination && pagination.lastValue){

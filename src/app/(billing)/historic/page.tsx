@@ -14,7 +14,6 @@ export default function Historic() {
     const handleAddPage = (page: IPagination) => {
         setListPage((prevPages) => [...prevPages, page]);
     }
-    console.log(listPages)
     return (
         <>
             <div className="mb-10">

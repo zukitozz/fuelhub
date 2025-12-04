@@ -130,7 +130,6 @@ const StepB: React.FC<StepBProps> = ({
           className='bg-purple-400 px-4 py-2 rounded-xl w-full'
           onClick={() => {
             handleAddDetail({...formDetailData})
-            console.log("limpiando data del detalle");
             handleCleanForm();
           }}
         >

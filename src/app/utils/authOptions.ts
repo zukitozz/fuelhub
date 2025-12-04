@@ -14,5 +14,3 @@ export const authOptions: NextAuthOptions = {
     signIn: '/',
   }, 
 }
-console.log("Cognito Provider Configured with:");
-console.log(authOptions);

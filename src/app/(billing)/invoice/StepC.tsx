@@ -35,6 +35,7 @@ const StepC: React.FC<StepCProps> = ({
                   <th scope="col" className="px-1 py-3">Producto</th>
                   <th scope="col" className="px-1 py-3">Cantidad</th>
                   <th scope="col" className="px-1 py-3">Scop</th>
+                  <th scope="col" className="px-1 py-3">Eliminar</th>
                 </tr>
               </thead>      
         { completeFormData.detalle_items.map( ( detail, index ) => (
@@ -55,6 +56,14 @@ const StepC: React.FC<StepCProps> = ({
                     <td className='text-right'>REGULAR</td>            
                     <td className='text-right'>{ detail.gal_regular }</td>
                     <td className='text-right'>{ detail.scop_regular }</td>                
+                    <td className='text-center align-middle'>
+                      <button
+                        className='text-red-600 hover:text-red-800'
+                        onClick={() => handleDeleteDetail(detail)}
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </td>                            
                   </tr>                                      
               </tbody>
 

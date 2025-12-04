@@ -1,11 +1,12 @@
 'use client';
 import Modal from '@/components/ui/modal/GenericModal';
-import { registerProduct } from "@/actions";
+import { listProducts, registerProduct } from "@/actions";
 import { IDestinatario, IOrigen, IProductForm } from '@/interfaces';
 import { SeedData } from '@/seed/seed';
 import React, { useState } from 'react';
-import { set } from 'react-hook-form';
 import { Product } from '@/model';
+import { useUIStore } from '@/store';
+import { Constants } from '@/constants/Constants';
 
 export const initialFormData: IProductForm = {
   id_origen: '',
@@ -18,6 +19,7 @@ interface DataProps {
 };
 
 const HomePage: React.FC<DataProps>  = ({ initialData }) => {
+    const { showAlert } = useUIStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const openModal = () => setIsModalOpen(true);
@@ -42,19 +44,37 @@ const HomePage: React.FC<DataProps>  = ({ initialData }) => {
         });
     };  
     const handleSubmitFormData = async () => {
-        console.log('Submitting form data:', formData);
         setDisabled(true);
         const { id_origen, ruc_destino, precio_galon } = formData;
+        if(!id_origen || !ruc_destino || precio_galon <= 0){
+            closeModal();
+            showAlert('Por favor complete todos los campos, no se creó el registro', 'warning');
+            setDisabled(false);
+            return;
+        }
         const origen = origenes.find((ori) => ori.id === id_origen) as IOrigen;
         const destino = destinatarios.find((dest) => dest.numero_documento === ruc_destino) as IDestinatario;
+
+        const { historic } = await listProducts(`${Constants.API_URL}/route`, null);
+        const existingRoute = historic.items.find((route) => 
+          (route.origen.id === id_origen && route.destino.numero_documento === ruc_destino)
+        );
+        if(existingRoute){
+            closeModal();
+            showAlert('La ruta ya existe, no se creó el registro', 'warning');
+            setDisabled(false);
+            return;
+        }
         const product = new Product(origen, destino, precio_galon);
         const savedProduct = await registerProduct(product);
+        closeModal();
         if(savedProduct.result){
-          alert('Producto registrado correctamente');
+          showAlert('Producto registrado correctamente', 'success')
           closeModal();
         } else {
-          alert('Error al registrar el producto');
+          showAlert('Error al registrar el producto', 'error')
         }
+        setDisabled(false);
     }  
 
     return (

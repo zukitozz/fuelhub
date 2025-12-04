@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react"
-import { Title } from "@/components"
+import { Alert, Title } from "@/components"
 import ModalPage from "./modal"
 import { ProductTable } from "./table"
 import { IPagination } from "@/interfaces"

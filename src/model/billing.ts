@@ -40,8 +40,9 @@ export class Billing implements IBilling{
     detalle: Item[];
     etapa: string;
     transaccion: string;
+    visibilidad_administrador: number;
     enviado?: boolean;
-    constructor(serie: string, correlativo: number, numeracion: string, receptor: IReceptor, usuario: string, tipo_comprobante: string, total_gravadas: number, total_igv: number, total_venta: number, pago_yape: number, pago_tarjeta: number, pago_efectivo: number, ruc: string, etapa: string, transaccion: string, detalle: Item[], tipo_documento_afectado: string = '', numeracion_documento_afectado: string = '', motivo_documento_afectado: string = ''){
+    constructor(serie: string, correlativo: number, numeracion: string, receptor: IReceptor, usuario: string, tipo_comprobante: string, total_gravadas: number, total_igv: number, total_venta: number, pago_yape: number, pago_tarjeta: number, pago_efectivo: number, ruc: string, etapa: string, transaccion: string, visibilidad_administrador: number, detalle: Item[], tipo_documento_afectado: string = '', numeracion_documento_afectado: string = '', motivo_documento_afectado: string = ''){
         this.serie = serie;
         this.correlativo = correlativo;
         this.numeracion = numeracion;
@@ -61,5 +62,6 @@ export class Billing implements IBilling{
         this.motivo_documento_afectado = motivo_documento_afectado;
         this.etapa = etapa;
         this.transaccion = transaccion;
+        this.visibilidad_administrador = visibilidad_administrador;
     }   
 }
