@@ -10,7 +10,7 @@ import moment, { Moment } from 'moment';
 import { ApproveGuiaRequest } from '@/interfaces';
 
 export default function AproovePage() {
-    const fetcher = (url: string) => listBilling(url, fechaEmision, null);
+    const fetcher = (url: string) => listBilling(url, fechaEmision, '', null);
     const { data } = useSWR(`${Constants.API_URL}/billing`, fetcher);
     const [ fechaEmision, setFechaEmision] = useState<Date | null>(new Date());
     const [isLoading, setIsLoading] = useState(false);
