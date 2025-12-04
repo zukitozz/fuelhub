@@ -14,7 +14,6 @@ import { useSession } from 'next-auth/react';
 
 interface HistoricProps {
     fechaEmision?: Date;
-    role: string | null;
     page: IPagination | null;
     listPages: IPagination[];
     handleAddPage: (page: IPagination) => void;
