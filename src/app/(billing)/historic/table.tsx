@@ -10,19 +10,21 @@ import "react-datetime/css/react-datetime.css";
 import { ILastEvaluatedKey, IPagination } from '@/interfaces';
 import { use, useEffect } from 'react';
 import moment from 'moment';
+import { useSession } from 'next-auth/react';
 
 interface HistoricProps {
     fechaEmision?: Date;
+    role: string | null;
     page: IPagination | null;
     listPages: IPagination[];
     handleAddPage: (page: IPagination) => void;
 }
 
-const fetcher = (url: string, fechaEmision: Date, page: IPagination | null) => listBilling(url, fechaEmision, page);
+const fetcher = (url: string, fechaEmision: Date, role: string | null, page: IPagination | null) => listBilling(url, fechaEmision, role, page);
 
 export const HistoricTable = ({ fechaEmision, page, listPages, handleAddPage }: HistoricProps) => {
-
-    const { data, error, isValidating, isLoading, mutate } = useSWR(`${Constants.API_URL}/billing`, (url) => fetcher(url, fechaEmision ?? new Date(), page));
+    const { data: session, status } = useSession()
+    const { data, error, isValidating, isLoading, mutate } = useSWR(`${Constants.API_URL}/billing`, (url) => fetcher(url, fechaEmision ?? new Date(), status, page));
     const downloadPdfFromBase64 = (base64String: string, filename: string) => {
       // Ensure the Base64 string has the correct data URI prefix
       const dataUri = base64String.startsWith("data:application/pdf;base64,")

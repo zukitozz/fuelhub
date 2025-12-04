@@ -45,6 +45,7 @@ export interface IBilling {
     enviado?: boolean; 
     etapa: string; 
     transaccion: string;
+    visibilidad_administrador: number;
     detalle?: IItem[];  
 }
 

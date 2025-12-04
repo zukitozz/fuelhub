@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from 'react-icons/io5';
 import { useUIStore } from '@/store';
-import { useEffect } from 'react';
 
 export const Sidebar = () => {
   const { data: session, status } = useSession()
@@ -14,17 +13,10 @@ export const Sidebar = () => {
   const callbackUrl = `${process.env.NEXT_PUBLIC_CALLBACK_URL}routes`;
   const handleClickSingIn  = async () => {
         const result = await signIn('cognito',{ redirect: false, callbackUrl });
-        console.log({result});
   };
   const handleClickSingOut  = async () => {
     signOut();
   }
-
-  useEffect(() => {
-    console.log("session sidebar:", status);
-  }, [status])
-
-
   return (
     <div>
       {

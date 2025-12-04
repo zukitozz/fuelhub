@@ -28,5 +28,6 @@ export interface ICarrier {
     enviado?: boolean; 
     etapa: string; 
     transaccion: string;
+    visibilidad_administrador: number;
     detalle?: ICarrierItem[]; 
 }
